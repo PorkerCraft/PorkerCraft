@@ -565,7 +565,7 @@ public class PorkerMainMenu extends MenuBase
         GL11.glScalef(f1, f1, f1);
         this.drawCenteredString(this.fontRenderer, this.splashText, 0, -8, 16776960);
         GL11.glPopMatrix();
-        String s = "Minecraft 1.5.1";
+        String s = "Minecraft 1.5.2";
 
         if (this.mc.isDemo())
         {
@@ -663,7 +663,12 @@ public class PorkerMainMenu extends MenuBase
 	
 	public String getVersion()
 	{
-		return "1.5.1";
+		return "1.5.2";
+	}
+	
+	public String getMusicFileName()
+	{
+		return "PorkerCraftTheme";
 	}
 	
 	public String getIconPath()

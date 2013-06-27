@@ -48,7 +48,10 @@ public class BlockFirePorker extends BlockFire {
 		setBurnRate(Block.tnt.blockID, 15, 100);
 		setBurnRate(Block.tallGrass.blockID, 60, 100);
 		setBurnRate(Block.cloth.blockID, 30, 60);
-		setBurnRate(Block.vine.blockID, 15, 100);
+		setBurnRate(Block.vine.blockID, 5, 5);
+		setBurnRate(PorkerCraft.PorkTreeLeaf.blockID, 5, 5);
+		setBurnRate(PorkerCraft.PorkTreeLog.blockID, 5, 5);
+		setBurnRate(PorkerCraft.PorkTreeSapling.blockID, 5, 5);
 	}
 
 	private void setBurnRate(int par1, int par2, int par3) {

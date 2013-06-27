@@ -16,7 +16,6 @@ import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import scala.xml.include.sax.Main;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

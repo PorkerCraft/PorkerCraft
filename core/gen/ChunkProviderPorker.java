@@ -49,6 +49,7 @@ private MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
 private MapGenScatteredFeature scatteredFeatureGenerator = new MapGenScatteredFeature();
 private MapGenBase ravineGenerator = new MapGenRavine();
 private BiomeGenBase[] biomesForGeneration;
+private MapGenBossTempleAll mapGenTemple = new MapGenBossTempleAll();
 double[] noise3;
 double[] noise1;
 double[] noise2;
@@ -242,6 +243,7 @@ this.mineshaftGenerator.generate(this, this.worldObj, par1, par2, var3);
 this.villageGenerator.generate(this, this.worldObj, par1, par2, var3);
 this.strongholdGenerator.generate(this, this.worldObj, par1, par2, var3);
 this.scatteredFeatureGenerator.generate(this, this.worldObj, par1, par2, var3);
+mapGenTemple.generate(rand, par1, par2, this.worldObj, this, this);
 }
 Chunk var4 = new Chunk(this.worldObj, var3, par1, par2);
 byte[] var5 = var4.getBiomeArray();
