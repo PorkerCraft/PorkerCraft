@@ -1,12 +1,14 @@
 package PorkerCraft.core.mob.entity;
 
-import PorkerCraft.core.util.EntityPorkerMob;
-import PorkerCraft.core.util.EntityPorkerMobFlying;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIControlledByPlayer;
+import net.minecraft.entity.ai.EntityAIFollowOwner;
 import net.minecraft.entity.ai.EntityAIFollowParent;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMate;
+import net.minecraft.entity.ai.EntityAIOpenDoor;
 import net.minecraft.entity.ai.EntityAIPanic;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAITempt;
@@ -20,7 +22,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.stats.AchievementList;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -30,6 +34,11 @@ public class EntityFlyingPig extends EntityPorkerMobFlying {
 	   /** AI task for player control. */
     private final EntityAIControlledByPlayer aiControlledByPlayer;
     private ChunkCoordinates currentFlightTarget;
+    
+    public double waypointX;
+    public double waypointY;
+    public double waypointZ;
+    private Entity targetedEntity = null;
 
     public EntityFlyingPig(World par1World)
     {
@@ -41,11 +50,11 @@ public class EntityFlyingPig extends EntityPorkerMobFlying {
         float f = 0.25F;
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIPanic(this, 0.38F));
-        this.tasks.addTask(2, this.aiControlledByPlayer = new EntityAIControlledByPlayer(this, 0.34F));
+        this.tasks.addTask(2, this.aiControlledByPlayer = new EntityAIControlledByPlayer(this, 1.34F));
         this.tasks.addTask(3, new EntityAIMatePorkerFlying(this, f));
         this.tasks.addTask(4, new EntityAITempt(this, 0.3F, Item.carrotOnAStick.itemID, false));
         this.tasks.addTask(4, new EntityAITempt(this, 0.3F, Item.carrot.itemID, false));
-        this.tasks.addTask(5, new EntityAIFollowParentPorker(this, 0.28F));
+        this.tasks.addTask(5, new EntityAIFollowParentFlying(this, 0.28F));
         this.tasks.addTask(6, new EntityAIWander(this, f));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
@@ -204,15 +213,6 @@ public class EntityFlyingPig extends EntityPorkerMobFlying {
             return false;
         }
     }
-
-    /**
-     * Returns the item ID for the item the mob drops on death.
-     */
-    protected int getDropItemId()
-    {
-        return this.isBurning() ? Item.porkCooked.itemID : Item.porkRaw.itemID;
-    }
-
     /**
      * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
      * par2 - Level of Looting used to kill this mob.
@@ -329,11 +329,39 @@ public class EntityFlyingPig extends EntityPorkerMobFlying {
     
     public boolean getWillPigFly()
     {
+    	if(this.aiControlledByPlayer != null){	
         return (this.dataWatcher.getWatchableObjectByte(16) & 1) != 0;
+    	}
+    	
+		return hasAttacked;
+    }
+    
+    /**
+     * True if the ghast has an unobstructed line of travel to the waypoint.
+     */
+    private boolean isCourseTraversable(double par1, double par3, double par5, double par7)
+    {
+        double d4 = (this.waypointX - this.posX) / par7;
+        double d5 = (this.waypointY - this.posY) / par7;
+        double d6 = (this.waypointZ - this.posZ) / par7;
+        AxisAlignedBB axisalignedbb = this.boundingBox.copy();
+
+        for (int i = 1; (double)i < par7; ++i)
+        {
+            axisalignedbb.offset(d4, d5, d6);
+
+            if (!this.worldObj.getCollidingBoundingBoxes(this, axisalignedbb).isEmpty())
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public void setWillPigFly(boolean par1)
     {
+    	if(this.aiControlledByPlayer != null){
         byte b0 = this.dataWatcher.getWatchableObjectByte(16);
 
         if (par1)
@@ -344,5 +372,6 @@ public class EntityFlyingPig extends EntityPorkerMobFlying {
         {
             this.dataWatcher.updateObject(16, Byte.valueOf((byte)(b0 & -2)));
         }
+    	}
     }
 }

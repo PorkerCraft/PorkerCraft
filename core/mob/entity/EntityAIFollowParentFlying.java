@@ -6,17 +6,17 @@ import java.util.List;
 
 import net.minecraft.entity.ai.EntityAIBase;
 
-public class EntityAIFollowParentPorker extends EntityAIBase
+public class EntityAIFollowParentFlying extends EntityAIBase
 {
     /** The child that is following its parent. */
-    EntityPorkerMob childAnimal;
-    EntityPorkerMob parentAnimal;
+    EntityPorkerMobFlying childAnimal;
+    EntityPorkerMobFlying parentAnimal;
     float field_75347_c;
     private int field_75345_d;
 
-    public EntityAIFollowParentPorker(EntityPorkerMob entityPorkerMob, float par2)
+    public EntityAIFollowParentFlying(EntityPorkerMobFlying entityPorkerMobFlying, float par2)
     {
-        this.childAnimal = entityPorkerMob;
+        this.childAnimal = entityPorkerMobFlying;
         this.field_75347_c = par2;
     }
 
@@ -32,27 +32,27 @@ public class EntityAIFollowParentPorker extends EntityAIBase
         else
         {
             List list = this.childAnimal.worldObj.getEntitiesWithinAABB(this.childAnimal.getClass(), this.childAnimal.boundingBox.expand(8.0D, 4.0D, 8.0D));
-            EntityPorkerMob EntityPorkerMob = null;
+            EntityPorkerMobFlying EntityPorkerMobFlying = null;
             double d0 = Double.MAX_VALUE;
             Iterator iterator = list.iterator();
 
             while (iterator.hasNext())
             {
-                EntityPorkerMob EntityPorkerMob1 = (EntityPorkerMob)iterator.next();
+                EntityPorkerMobFlying EntityPorkerMobFlying1 = (EntityPorkerMobFlying)iterator.next();
 
-                if (EntityPorkerMob1.getGrowingAge() >= 0)
+                if (EntityPorkerMobFlying1.getGrowingAge() >= 0)
                 {
-                    double d1 = this.childAnimal.getDistanceSqToEntity(EntityPorkerMob1);
+                    double d1 = this.childAnimal.getDistanceSqToEntity(EntityPorkerMobFlying1);
 
                     if (d1 <= d0)
                     {
                         d0 = d1;
-                        EntityPorkerMob = EntityPorkerMob1;
+                        EntityPorkerMobFlying = EntityPorkerMobFlying1;
                     }
                 }
             }
 
-            if (EntityPorkerMob == null)
+            if (EntityPorkerMobFlying == null)
             {
                 return false;
             }
@@ -62,7 +62,7 @@ public class EntityAIFollowParentPorker extends EntityAIBase
             }
             else
             {
-                this.parentAnimal = EntityPorkerMob;
+                this.parentAnimal = EntityPorkerMobFlying;
                 return true;
             }
         }

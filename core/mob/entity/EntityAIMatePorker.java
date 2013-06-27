@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import PorkerCraft.core.util.EntityPorkerMob;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityXPOrb;

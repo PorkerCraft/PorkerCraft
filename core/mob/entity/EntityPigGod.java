@@ -1,10 +1,10 @@
 package PorkerCraft.core.mob.entity;
 
-import PorkerCraft.core.util.EntityPorkerMob;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
+import net.minecraft.entity.ai.EntityAIControlledByPlayer;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMate;
@@ -24,32 +24,41 @@ import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.stats.AchievementList;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityPigGod extends EntityPorkerMob {
 
+    /** AI task for player control. */
+    private final EntityAIControlledByPlayer aiControlledByPlayer;
+    String Name;
+	
 	public EntityPigGod(World par1World) {
 		super(par1World);
-		this.moveSpeed = 0.4F;
 		this.setSize(1.0F, 1.0F);
+        float f = 0.4F;
 		this.texture = "/mob/piggod.png";
-		this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIWander(this, this.moveSpeed));
-        this.tasks.addTask(2, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-        this.tasks.addTask(3, new EntityAILookIdle(this));
-        this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
-        this.tasks.addTask(5, new EntityAIMoveIndoors(this));
-        float f = 0.25F;
-		this.tasks.addTask(6, new EntityAIMatePorker(this, f));
-        this.tasks.addTask(7, new EntityAITempt(this, 0.3F, Item.carrot.itemID, false));
-        this.tasks.addTask(8, new EntityAIAttackOnCollide(this, EntityZombie.class, this.moveSpeed, true));
-        this.tasks.addTask(9, new EntityAIAttackOnCollide(this, EntitySkeleton.class, this.moveSpeed, true));
+		this.tasks.addTask(1, new EntityAISwimming(this));
+        this.tasks.addTask(2, new EntityAIWander(this, f));
+        this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
+        this.tasks.addTask(4, new EntityAILookIdle(this));
+        this.tasks.addTask(5, new EntityAIOpenDoor(this, true));
+        this.tasks.addTask(6, new EntityAIMoveIndoors(this));
+		this.tasks.addTask(7, new EntityAIMatePorker(this, f));
+        this.tasks.addTask(8, new EntityAITempt(this, 0.3F, Item.carrot.itemID, false));
+        this.tasks.addTask(8, new EntityAITempt(this, 0.3F, Item.carrotOnAStick.itemID, false));
+        this.tasks.addTask(9, new EntityAIAttackOnCollide(this, EntityZombie.class, this.moveSpeed, true));
+        this.tasks.addTask(10, new EntityAIAttackOnCollide(this, EntitySkeleton.class, this.moveSpeed, true));
+        this.tasks.addTask(11, this.aiControlledByPlayer = new EntityAIControlledByPlayer(this, 0.34F));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
+        this.tasks.addTask(12, new EntityAIFollowParentPorker(this, 0.28F));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityZombie.class, 16.0F, 0, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntitySkeleton.class, 16.0F, 0, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntitySkeleton.class, 16.0F, 0, true)); 
         
+        Name = "Flying Pig";
 	}
 	
 	private ChunkCoordinates currentFlightTarget;
@@ -59,9 +68,27 @@ public class EntityPigGod extends EntityPorkerMob {
         return this.spawnBabyAnimal(par1EntityAgeable);
     }
 	
-	public EntityPig spawnBabyAnimal(EntityAgeable par1EntityAgeable)
+	public EntityPigGod spawnBabyAnimal(EntityAgeable par1EntityAgeable)
     {
-        return new EntityPig(this.worldObj);
+        return new EntityPigGod(this.worldObj);
+    }
+	
+    /**
+     * (abstract) Protected helper method to write subclass entity data to NBT.
+     */
+    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.writeEntityToNBT(par1NBTTagCompound);
+        par1NBTTagCompound.setBoolean("Saddle", this.getSaddled());
+    }
+
+    /**
+     * (abstract) Protected helper method to read subclass entity data from NBT.
+     */
+    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.readEntityFromNBT(par1NBTTagCompound);
+        this.setSaddled(par1NBTTagCompound.getBoolean("Saddle"));
     }
 
     /**
@@ -196,5 +223,137 @@ public class EntityPigGod extends EntityPorkerMob {
 
         return i;
     }
+    
+    /**
+     * returns true if all the conditions for steering the entity are met. For pigs, this is true if it is being ridden
+     * by a player and the player is holding a carrot-on-a-stick
+     */
+    public boolean canBeSteered()
+    {
+        ItemStack itemstack = ((EntityPlayer)this.riddenByEntity).getHeldItem();
+        return itemstack != null && itemstack.itemID == Item.carrotOnAStick.itemID;
+    }
 
+    protected void entityInit()
+    {
+        super.entityInit();
+        this.dataWatcher.addObject(16, Byte.valueOf((byte)0));
+    }
+
+    /**
+     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
+     */
+    public boolean interact(EntityPlayer par1EntityPlayer)
+    {
+        Name = "Hi Youtube!";
+        ItemStack itemstack = par1EntityPlayer.inventory.getCurrentItem();
+        //The statement below will check if you are a player and you are holding a saddle or that you have been on this pig before
+        if(itemstack != null && itemstack.itemID == Item.saddle.itemID && this.riddenByEntity == null || this.riddenByEntity == par1EntityPlayer || getSaddled() == true)
+        {
+                if(this.riddenByEntity == null || this.riddenByEntity == par1EntityPlayer)      
+                {
+                        //The statement below will set "pm" to true because now the player is on a pig, it will also take away the saddle form the player
+                        if(getSaddled() != true)
+                        {
+                            setSaddled(true);
+                            par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, null);
+                        }
+               
+                        par1EntityPlayer.mountEntity(this);            
+                        return true;
+                       
+                }
+        }
+        else if(riddenByEntity != null)
+        {
+                riddenByEntity = null;
+        }
+        return true;
+        
+        
+        
+        /*if (super.interact(par1EntityPlayer))
+        {
+            return true;
+        }
+        else if (this.getSaddled() && !this.worldObj.isRemote && (this.riddenByEntity == null || this.riddenByEntity == par1EntityPlayer))
+        {
+            par1EntityPlayer.mountEntity(this);
+            return true;
+        }
+        else
+        {
+            return false;
+        }*/
+    }
+
+    /**
+     * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
+     * par2 - Level of Looting used to kill this mob.
+     */
+    protected void dropFewItemsPorker(boolean par1, int par2)
+    {
+        int j = this.rand.nextInt(3) + 1 + this.rand.nextInt(1 + par2);
+
+        for (int k = 0; k < j; ++k)
+        {
+            if (this.isBurning())
+            {
+                this.dropItem(Item.porkCooked.itemID, 1);
+            }
+            else
+            {
+                this.dropItem(Item.porkRaw.itemID, 1);
+            }
+        }
+
+        if (this.getSaddled())
+        {
+            this.dropItem(Item.saddle.itemID, 1);
+        }
+    }
+
+    /**
+     * Returns true if the pig is saddled.
+     */
+    public boolean getSaddled()
+    {
+        return (this.dataWatcher.getWatchableObjectByte(16) & 1) != 0;
+    }
+
+    /**
+     * Set or remove the saddle of the pig.
+     */
+    public void setSaddled(boolean par1)
+    {
+        if (par1)
+        {
+            this.dataWatcher.updateObject(16, Byte.valueOf((byte)1));
+        }
+        else
+        {
+            this.dataWatcher.updateObject(16, Byte.valueOf((byte)0));
+        }
+    }
+
+    /**
+     * Called when the mob is falling. Calculates and applies fall damage.
+     */
+    protected void fall(float par1)
+    {
+        super.fall(par1);
+
+        if (par1 > 5.0F && this.riddenByEntity instanceof EntityPlayer)
+        {
+            ((EntityPlayer)this.riddenByEntity).triggerAchievement(AchievementList.flyPig);
+        }
+    }
+
+    /**
+     * Return the AI task for player control.
+     */
+    public EntityAIControlledByPlayer getAIControlledByPlayer()
+    {
+        return this.aiControlledByPlayer;
+    }
 }
