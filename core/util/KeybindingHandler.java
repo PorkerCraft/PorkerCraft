@@ -6,21 +6,26 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.src.ModLoader;
+import net.minecraft.world.World;
+
 import org.lwjgl.input.Keyboard;
+
+import PorkerCraft.core.mob.entity.EntityFlyingPig;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.common.TickType;
+
+import PorkerCraft.core.mob.entity.*;
 
 public class KeybindingHandler extends KeyHandler
 {
 	Minecraft mc;
+	World world;
+	EntityPlayer player;
 	
-	public static KeyBinding TEST = new KeyBinding("DisplayName", Keyboard.KEY_I);
-    //public static KeyBinding TEST = new KeyBinding("key.test", 73);
-	
-	//public static KeyBinding acOptions = new KeyBinding("AC Options", Keyboard.KEY_J);
+	public static KeyBinding PigFlyUp = new KeyBinding("PigFlyUp", Keyboard.KEY_I);
 	
 	public static KeyBinding [] arrayOfKeys = new KeyBinding []
-		{ TEST /*keyName*/};
+		{ PigFlyUp /*keyName*/};
 	public static boolean [] areRepeating = new boolean []
 		{false};
 
@@ -33,17 +38,18 @@ public class KeybindingHandler extends KeyHandler
 	@Override
 	public String getLabel()
 	{
-		return "Arcticraft KeyBindings";
+		return "PorkerCraft KeyBindings";
 	}
-
+	
 	@Override
 	public void keyDown(EnumSet <TickType> types, KeyBinding kb, boolean tickEnd, boolean isRepeat)
 	{
 		if (tickEnd && mc.thePlayer != null && mc.currentScreen == null)
 		{
-			if(kb.keyCode == TEST.keyCode)
-			{
-				mc.thePlayer.addChatMessage("TESTEST");
+			if(kb.keyCode == PigFlyUp.keyCode)
+			{			
+				//world.playSoundFX(mc.thePlayer, "wraith1", 1.0f, 1.0f);
+				mc.sndManager.playSoundFX("mob.PorkerCraft.wraith1", 1.0F, 1.0F);
 			}
 		}
 	}

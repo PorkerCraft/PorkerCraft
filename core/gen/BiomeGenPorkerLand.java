@@ -28,6 +28,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 import PorkerCraft.*;
+import PorkerCraft.core.mob.entity.EntityFlyingPig;
+import PorkerCraft.core.mob.entity.EntityPigGod;
+import PorkerCraft.core.mob.entity.EntitySkellyPig;
 
 public class BiomeGenPorkerLand extends BiomeGenBase
 {	
@@ -53,6 +56,9 @@ this.topBlock = ((byte)PorkerCraft.PorkGrass.blockID);
 this.fillerBlock = ((byte)PorkerCraft.PorkStone.blockID);
 this.setBiomeName("The Land Of The Piggys");
 this.spawnableMonsterList.add(new SpawnListEntry(EntityPig.class, 100, 4, 4));
+this.spawnableMonsterList.add(new SpawnListEntry(EntityFlyingPig.class, 100, 4, 4));
+this.spawnableMonsterList.add(new SpawnListEntry(EntityPigGod.class, 100, 4, 4));
+this.spawnableMonsterList.add(new SpawnListEntry(EntitySkellyPig.class, 100, 4, 4));
 this.theBiomeDecorator.generateLakes = true;
 
 /** this changes the water colour, its set to red now but google the java colours **/

@@ -572,7 +572,8 @@ public abstract class EntityPorkerMobFlying extends EntityAgeable implements IAn
             }
 
             float f3 = 0.16277136F / (f2 * f2 * f2);
-            this.moveFlying(par1, par2, this.onGround ? 0.1F * f3 : 0.02F);
+            //this.moveFlying(par1, par2, this.onGround ? 0.1F * f3 : 0.02F);
+            this.moveFlying(par1, par2, this.onGround ? 1.1F * f3 : 0.02F);
             f2 = 0.91F;
 
             if (this.onGround)
@@ -602,7 +603,7 @@ public abstract class EntityPorkerMobFlying extends EntityAgeable implements IAn
             f4 = 1.0F;
         }
 
-        this.limbYaw += (f4 - this.limbYaw) * 0.4F;
+        this.limbYaw += (f4 - this.limbYaw) * 0.5F;
         this.limbSwing += this.limbYaw;
     }
 

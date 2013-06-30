@@ -1,5 +1,6 @@
 package PorkerCraft.core.mob.model;
 
+import PorkerCraft.core.mob.entity.EntityFlyingPig;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBase;
@@ -8,8 +9,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.opengl.GL11;
-
-import PorkerCraft.core.mob.entity.EntityFlyingPig;
 
 public class ModelFlyingPig extends ModelBase
 {
@@ -41,7 +40,7 @@ public class ModelFlyingPig extends ModelBase
         setTextureOffset("Nose", 16, 16);
 
         head = new ModelRenderer(this, 0, 0);
-        head.addBox(-4F, -6F, -6F, 8, 8, 8);
+        head.addBox(-4F, -2F, -6F, 8, 8, 8);
         head.setRotationPoint(0F, 10F, -8F);
         head.setTextureSize(64, 32);
         head.mirror = true;
@@ -69,14 +68,14 @@ public class ModelFlyingPig extends ModelBase
         setRotation(leg2, 0F, 0F, 0F);
         leg2.mirror = false;
         Wing1 = new ModelRenderer(this, 72, 0);
-        Wing1.addBox(0F, 0F, -4F, 8, 1, 8);
+        Wing1.addBox(0F, -1F, -4F, 8, 1, 8);
         Wing1.setRotationPoint(5F, 10F, 0F);
         Wing1.setTextureSize(64, 32);
         Wing1.mirror = true;
         setRotation(Wing1, 0F, 0F, 0F);
         Wing1.mirror = false;
         Wing2 = new ModelRenderer(this, 72, 0);
-        Wing2.addBox(-8F, 0F, -4F, 8, 1, 8);
+        Wing2.addBox(-8F, -1F, -4F, 8, 1, 8);
         Wing2.setRotationPoint(-5F, 10F, 0F);
         Wing2.setTextureSize(64, 32);
         Wing2.mirror = true;
@@ -97,14 +96,12 @@ public class ModelFlyingPig extends ModelBase
         setRotation(leg4, 0F, 0F, 0F);
         leg4.mirror = false;
         Nose = new ModelRenderer(this, 16, 16);
-        Nose.addBox(-2F, -2F, -7F, 4, 3, 1);
+        Nose.addBox(-2F, 2F, -7F, 4, 3, 1);
         Nose.setRotationPoint(0F, 10F, -8F);
         Nose.setTextureSize(64, 32);
         Nose.mirror = true;
         setRotation(Nose, 0F, 0F, 0F);
         Nose.mirror = false;
-        this.body.addChild(this.Wing1);
-        this.body.addChild(this.Wing2);
     }
 
     /**
@@ -164,8 +161,22 @@ public class ModelFlyingPig extends ModelBase
     {
     	EntityFlyingPig entityflyingpig = (EntityFlyingPig)par7Entity;
     	
-    	if(entityflyingpig.getWillPigFly() == false){
-    	this.head.rotateAngleX = par5 / (180F / (float)Math.PI);
+    	//if(entityflyingpig.getWillPigFly() == false){
+    	//this.head.rotateAngleX = par5 / (180F / (float)Math.PI);
+        //this.head.rotateAngleY = par4 / (180F / (float)Math.PI);
+        //this.Nose.rotateAngleX = par5 / (180F / (float)Math.PI);
+        //this.Nose.rotateAngleY = par4 / (180F / (float)Math.PI);
+        //this.body.rotateAngleX = ((float)Math.PI / 2F);
+        //this.leg1.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
+        //this.leg4.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
+        //this.leg2.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
+        //this.leg3.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
+        //this.Wing1.rotateAngleZ = ((float)Math.PI / 2F);
+        //this.Wing2.rotateAngleZ = -this.Wing1.rotateAngleY;
+    	//}
+    	if(entityflyingpig.getWillPigFly() == true)
+    	{
+        this.head.rotateAngleX = par5 / (180F / (float)Math.PI);
         this.head.rotateAngleY = par4 / (180F / (float)Math.PI);
         this.Nose.rotateAngleX = par5 / (180F / (float)Math.PI);
         this.Nose.rotateAngleY = par4 / (180F / (float)Math.PI);
@@ -174,9 +185,11 @@ public class ModelFlyingPig extends ModelBase
         this.leg4.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
         this.leg2.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
         this.leg3.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-        this.Wing1.rotateAngleZ = ((float)Math.PI / 2F);
-        this.Wing2.rotateAngleZ = -this.Wing1.rotateAngleY;
-    	}else{
+        this.Wing1.rotateAngleZ = (float)Math.PI / 2F;
+        this.Wing2.rotateAngleZ = -this.Wing1.rotateAngleZ;
+    	}
+    	else if(entityflyingpig.getWillPigFly() == false)
+    	{
         	this.head.rotateAngleX = par5 / (180F / (float)Math.PI);
             this.head.rotateAngleY = par4 / (180F / (float)Math.PI);
             this.Nose.rotateAngleX = par5 / (180F / (float)Math.PI);
@@ -186,8 +199,8 @@ public class ModelFlyingPig extends ModelBase
             this.leg4.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
             this.leg2.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
             this.leg3.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-            this.Wing1.rotateAngleZ = MathHelper.cos(par4 * 1.3F) * (float)Math.PI * 0.25F;;
-            this.Wing2.rotateAngleZ = -this.Wing1.rotateAngleY;	
+            this.Wing1.rotateAngleZ = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
+            this.Wing2.rotateAngleZ = MathHelper.cos(par1 * 0.6662F + (float)Math.PI) * 1.4F * par2;
     	}
     }
 }

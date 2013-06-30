@@ -1,5 +1,7 @@
 package PorkerCraft.core.mob.entity;
 
+import PorkerCraft.core.mob.entity.AI.EntityAIFollowParentPorker;
+import PorkerCraft.core.mob.entity.AI.EntityAIMatePorker;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityCreature;
@@ -17,7 +19,9 @@ import net.minecraft.entity.ai.EntityAITempt;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityPig;
@@ -40,7 +44,7 @@ public class EntityPigGod extends EntityPorkerMob {
 		super(par1World);
 		this.setSize(1.0F, 1.0F);
         float f = 0.4F;
-		this.texture = "/mob/piggod.png";
+		this.texture = "/PorkerCraft/mob/pigGod.png";
 		this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIWander(this, f));
         this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
@@ -52,11 +56,17 @@ public class EntityPigGod extends EntityPorkerMob {
         this.tasks.addTask(8, new EntityAITempt(this, 0.3F, Item.carrotOnAStick.itemID, false));
         this.tasks.addTask(9, new EntityAIAttackOnCollide(this, EntityZombie.class, this.moveSpeed, true));
         this.tasks.addTask(10, new EntityAIAttackOnCollide(this, EntitySkeleton.class, this.moveSpeed, true));
+        this.tasks.addTask(10, new EntityAIAttackOnCollide(this, EntitySpider.class, this.moveSpeed, true));
+        this.tasks.addTask(10, new EntityAIAttackOnCollide(this, EntitySkellyPig.class, this.moveSpeed, true));
+        this.tasks.addTask(10, new EntityAIAttackOnCollide(this, EntityPigZombie.class, this.moveSpeed, true));
         this.tasks.addTask(11, this.aiControlledByPlayer = new EntityAIControlledByPlayer(this, 0.34F));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
         this.tasks.addTask(12, new EntityAIFollowParentPorker(this, 0.28F));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityZombie.class, 16.0F, 0, true));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntitySkeleton.class, 16.0F, 0, true)); 
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntitySpider.class, 16.0F, 0, true)); 
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntitySkellyPig.class, 16.0F, 0, true)); 
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPigZombie.class, 16.0F, 0, true)); 
         
         Name = "Flying Pig";
 	}
@@ -245,46 +255,20 @@ public class EntityPigGod extends EntityPorkerMob {
      */
     public boolean interact(EntityPlayer par1EntityPlayer)
     {
-        Name = "Hi Youtube!";
-        ItemStack itemstack = par1EntityPlayer.inventory.getCurrentItem();
-        //The statement below will check if you are a player and you are holding a saddle or that you have been on this pig before
-        if(itemstack != null && itemstack.itemID == Item.saddle.itemID && this.riddenByEntity == null || this.riddenByEntity == par1EntityPlayer || getSaddled() == true)
-        {
-                if(this.riddenByEntity == null || this.riddenByEntity == par1EntityPlayer)      
-                {
-                        //The statement below will set "pm" to true because now the player is on a pig, it will also take away the saddle form the player
-                        if(getSaddled() != true)
-                        {
-                            setSaddled(true);
-                            par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, null);
-                        }
-               
-                        par1EntityPlayer.mountEntity(this);            
-                        return true;
-                       
-                }
-        }
-        else if(riddenByEntity != null)
-        {
-                riddenByEntity = null;
-        }
-        return true;
-        
-        
-        
-        /*if (super.interact(par1EntityPlayer))
+        if (super.interact(par1EntityPlayer))
         {
             return true;
         }
         else if (this.getSaddled() && !this.worldObj.isRemote && (this.riddenByEntity == null || this.riddenByEntity == par1EntityPlayer))
         {
             par1EntityPlayer.mountEntity(this);
-            return true;
+            //return true;
+            return setSaddled(true);
         }
         else
         {
             return false;
-        }*/
+        }
     }
 
     /**
@@ -323,8 +307,9 @@ public class EntityPigGod extends EntityPorkerMob {
 
     /**
      * Set or remove the saddle of the pig.
+     * @return 
      */
-    public void setSaddled(boolean par1)
+    public boolean setSaddled(boolean par1)
     {
         if (par1)
         {
@@ -334,6 +319,8 @@ public class EntityPigGod extends EntityPorkerMob {
         {
             this.dataWatcher.updateObject(16, Byte.valueOf((byte)0));
         }
+        
+		return par1;
     }
 
     /**

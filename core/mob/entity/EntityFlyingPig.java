@@ -1,5 +1,7 @@
 package PorkerCraft.core.mob.entity;
 
+import PorkerCraft.core.mob.entity.AI.EntityAIFollowParentFlying;
+import PorkerCraft.core.mob.entity.AI.EntityAIMatePorkerFlying;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
@@ -43,14 +45,14 @@ public class EntityFlyingPig extends EntityPorkerMobFlying {
     public EntityFlyingPig(World par1World)
     {
         super(par1World);
-        this.texture = "/mob/pigFly.png";
+        this.texture = "/PorkerCraft/mob/pigFly.png";
         this.setSize(0.9F, 0.9F);
         this.setWillPigFly(true);
         this.getNavigator().setAvoidsWater(true);
         float f = 0.25F;
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIPanic(this, 0.38F));
-        this.tasks.addTask(2, this.aiControlledByPlayer = new EntityAIControlledByPlayer(this, 1.34F));
+        this.tasks.addTask(2, this.aiControlledByPlayer = new EntityAIControlledByPlayer(this, 0.34F));
         this.tasks.addTask(3, new EntityAIMatePorkerFlying(this, f));
         this.tasks.addTask(4, new EntityAITempt(this, 0.3F, Item.carrotOnAStick.itemID, false));
         this.tasks.addTask(4, new EntityAITempt(this, 0.3F, Item.carrot.itemID, false));
@@ -102,6 +104,7 @@ public class EntityFlyingPig extends EntityPorkerMobFlying {
         {
             if (this.currentFlightTarget != null && (!this.worldObj.isAirBlock(this.currentFlightTarget.posX, this.currentFlightTarget.posY, this.currentFlightTarget.posZ) || this.currentFlightTarget.posY < 1))
             {
+                //this.currentFlightTarget = null;
                 this.currentFlightTarget = null;
             }
 
@@ -118,7 +121,8 @@ public class EntityFlyingPig extends EntityPorkerMobFlying {
             this.motionZ += (Math.signum(d2) * 0.5D - this.motionZ) * 0.10000000149011612D;
             float f = (float)(Math.atan2(this.motionZ, this.motionX) * 180.0D / Math.PI) - 90.0F;
             float f1 = MathHelper.wrapAngleTo180_float(f - this.rotationYaw);
-            this.moveForward = 0.5F;
+            //this.moveForward = 0.5F;
+            this.moveForward = 1.5F;
             this.rotationYaw += f1;
 
             if (this.rand.nextInt(100) == 0 && this.worldObj.isBlockNormalCube(MathHelper.floor_double(this.posX), (int)this.posY + 1, MathHelper.floor_double(this.posZ)))
@@ -235,7 +239,7 @@ public class EntityFlyingPig extends EntityPorkerMobFlying {
 
         if (this.getSaddled())
         {
-            this.dropItem(Item.saddle.itemID, 1);
+            this.dropItem(PorkerCraft.PorkerCraft.FlyingPigSaddle.itemID, 1);
         }
     }
     
@@ -329,11 +333,7 @@ public class EntityFlyingPig extends EntityPorkerMobFlying {
     
     public boolean getWillPigFly()
     {
-    	if(this.aiControlledByPlayer != null){	
         return (this.dataWatcher.getWatchableObjectByte(16) & 1) != 0;
-    	}
-    	
-		return hasAttacked;
     }
     
     /**
@@ -361,17 +361,15 @@ public class EntityFlyingPig extends EntityPorkerMobFlying {
 
     public void setWillPigFly(boolean par1)
     {
-    	if(this.aiControlledByPlayer != null){
         byte b0 = this.dataWatcher.getWatchableObjectByte(16);
 
         if (par1)
         {
-            this.dataWatcher.updateObject(16, Byte.valueOf((byte)(b0 | 1)));
+           this.dataWatcher.updateObject(16, Byte.valueOf((byte)(b0 | 1)));
         }
         else
         {
             this.dataWatcher.updateObject(16, Byte.valueOf((byte)(b0 & -2)));
         }
-    	}
     }
 }

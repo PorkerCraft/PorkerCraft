@@ -1,15 +1,11 @@
 package PorkerCraft;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import org.lwjgl.input.Keyboard;
 
-import mod_TFmaterials.mod_TFmaterials;
-import mod_TFmaterials.Blocks.BlockFireTF;
-import mod_TFmaterials.Blocks.BlockTFportal;
-import mod_TFmaterials.Items.ItemFlintAndSteelTF;
-import mod_TFmaterials.client.gui.tileentity.TileEntityNuclearFurnace;
-import mod_TFmaterials.core.util.WorldProviderTF;
 import net.aetherteam.mainmenu_api.MainMenuAPI;
 import net.aetherteam.mainmenu_api.MenuBaseMinecraft;
 import net.minecraft.block.Block;
@@ -17,6 +13,7 @@ import net.minecraft.block.BlockFire;
 import net.minecraft.block.BlockSkull;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SoundManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -25,10 +22,12 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemSaddle;
 import net.minecraft.item.ItemSkull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.ModLoader;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import PorkerCraft.core.blocks.BlockFirePorker;
@@ -43,6 +42,8 @@ import PorkerCraft.core.blocks.PorkStone;
 import PorkerCraft.core.mainmenu.PorkerMainMenu;
 import PorkerCraft.core.proxy.CommonProxy;
 import PorkerCraft.core.util.KeybindingHandler;
+import PorkerCraft.core.util.PorkerEventHandler;
+import PorkerCraft.core.util.PorkerWorldGenerator;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.IWorldGenerator;
@@ -59,10 +60,11 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import PorkerCraft.core.blocks.*;
 import PorkerCraft.core.gen.BiomeGenPorkerLand;
 import PorkerCraft.core.gen.MapGenBossTempleAll;
-import PorkerCraft.core.gen.PorkerEventClass;
 import PorkerCraft.core.gen.WorldGenGlowPig1;
 import PorkerCraft.core.gen.WorldGenPorkTree;
 import PorkerCraft.core.gen.WorldProviderPorker;
@@ -70,12 +72,15 @@ import PorkerCraft.core.items.*;
 import PorkerCraft.core.mob.entity.*;
 import PorkerCraft.core.mob.render.*;
 import PorkerCraft.core.mob.model.*;
+import PorkerCraft.client.sounds.*;
 
 @Mod(modid="PorkerCraft", name="PorkerCraft", version="0.0.0.1.0")
 @NetworkMod(clientSideRequired=true, serverSideRequired=false)
 public class PorkerCraft {
 
-        // The instance of your mod that Forge uses.
+        private PorkerEventHandler EventHandler;
+
+		// The instance of your mod that Forge uses.
         @Instance("PorkerCraft")
         public static PorkerCraft instance;
         
@@ -85,10 +90,10 @@ public class PorkerCraft {
         
         @PreInit
         public void preInit(FMLPreInitializationEvent event) {
-                // Stub Method
+
         }
         
-        public static int dimension = 560;
+        public static int dimension = 300;
         
         public static Block PorkStone;
         public static Block PorkGrass;
@@ -98,10 +103,42 @@ public class PorkerCraft {
         public static BlockFirePorker FirePorker;
         public static Item PorkAndGold;
         public static BiomeGenBase PorkerLand;
+        public static BiomeGenBase PigPlains;
         public static Block PorkTreeLeaf;
         public static Block PorkTreeLog;
         public static Block PorkTreeSapling;
+        public static Item FlyingPigSaddle;
         
+        static URL jarLocation; // Root directory for mod
+        static {
+                try {
+                        URL location = PorkerCraft.class.getProtectionDomain().getCodeSource().getLocation();
+                        if (!location.getProtocol().equals("jar")) {
+                                File f = new File(location.toURI());
+                                String filename = f.getName().toLowerCase();
+                                if (filename.endsWith(".jar") || filename.endsWith(".zip"))
+                                        location = new URL("jar", null, location.toExternalForm().concat("!/"));
+                                else {
+                                        File parent;
+                                        while ((parent = f.getParentFile()) != null && !(parent.getName().equals("mods") || parent.getName().equals("bin")))
+                                                f = parent;
+                                        if (parent == null)
+                                                f = new File(location.toURI());
+                                        jarLocation = f.toURI().toURL();
+                                }
+                        }
+                        if (location.getProtocol().equals("jar")) {
+                                String path = location.getPath();
+                                int i = path.indexOf("!/");
+                                jarLocation = new URL("jar", null, path.substring(0, i + 2));
+                        }
+                } catch (Exception e) {
+                        e.printStackTrace();
+                }
+        }
+        
+    	String[] soundNames = { "wraith1.ogg", "wraith2.ogg", "wraith3.ogg", "wraithdying1.ogg", "wraithdying2.ogg", "wraithurt1.ogg", "wraithurt2.ogg" };
+
         public KeyBinding keyBindFullBright = new KeyBinding("key.bright", 73);
         
     	static int startEntityId = 300;
@@ -116,8 +153,26 @@ public class PorkerCraft {
     		EntityRegistry.registerGlobalEntityID(EntityFlyingPig.class, "Flying Pig", 2);
     		EntityRegistry.addSpawn(EntityFlyingPig.class, 10, 1, 2, EnumCreatureType.creature);
     		EntityRegistry.findGlobalUniqueEntityId();
-    		registerEntityEgg(EntityFlyingPig.class, 0xFAAFBE, 0x000000);
+    		registerEntityEgg(EntityFlyingPig.class, 0xFAAFBE, 0xFAAFCE);
     		RenderingRegistry.registerEntityRenderingHandler(EntityFlyingPig.class, new RenderFlyingPig(new ModelFlyingPig(), 0.3F));
+    		
+    		EntityRegistry.registerGlobalEntityID(EntitySkellyPig.class, "Skelly Pig", 3);
+    		EntityRegistry.addSpawn(EntitySkellyPig.class, 10, 1, 2, EnumCreatureType.creature);
+    		EntityRegistry.findGlobalUniqueEntityId();
+    		registerEntityEgg(EntitySkellyPig.class, 0xFACFBE, 0xFAAFDE);
+    		RenderingRegistry.registerEntityRenderingHandler(EntitySkellyPig.class, new RenderSkellyPig(new ModelSkellyPig(), 0.3F));
+    		
+    		EntityRegistry.registerGlobalEntityID(EntityPigMen.class, "PigMen", 4);
+    		EntityRegistry.addSpawn(EntityPigMen.class, 10, 1, 2, EnumCreatureType.creature);
+    		EntityRegistry.findGlobalUniqueEntityId();
+    		registerEntityEgg(EntityPigMen.class, 0xFDAFBE, 0xFADFDE);
+    		RenderingRegistry.registerEntityRenderingHandler(EntityPigMen.class, new RenderPigMen(new ModelPigMen(), 0.3F));
+    		
+    		EntityRegistry.registerGlobalEntityID(EntityPigWraith.class, "Pig Wraith", 5);
+    		EntityRegistry.addSpawn(EntityPigWraith.class, 10, 1, 2, EnumCreatureType.creature);
+    		EntityRegistry.findGlobalUniqueEntityId();
+    		registerEntityEgg(EntityPigWraith.class, 0xFAFFBE, 0xFEEFDE);
+    		RenderingRegistry.registerEntityRenderingHandler(EntityPigWraith.class, new RenderPigWraith(new ModelPigWraith(), 0.3F));
     	}
     	
     	public static void registerEntityEgg(Class<? extends Entity> entity, int primaryColor, int secondaryColor){
@@ -150,11 +205,15 @@ public class PorkerCraft {
                 PorkTreeSapling = new BlockPorkTreeSapling(3392, 5, Material.leaves).setUnlocalizedName("PorkerCraft:PorkTreeSapling").setCreativeTab(CreativeTabs.tabBlock);
                 
                 PorkerLand = (new BiomeGenPorkerLand(24));
+                PigPlains = (new BiomeGenPorkerLand(25));
                 
                 PorkAndGold = (new ItemPorkAndGold(3396)).setUnlocalizedName("Pork And Gold").setCreativeTab(CreativeTabs.tabTools);
-        
-                /** Event's **/
-                MinecraftForge.EVENT_BUS.register(new PorkerEventClass());
+                FlyingPigSaddle = (new ItemSaddleFlyingPig(3391)).setUnlocalizedName("Flying Pig Saddle");
+                
+                /** Normal Dimension **/ //DimensionManager.registerProviderType(MainConfig.DimID, WorldProviderTutorial.class, true);
+                
+            	PorkerEventHandler eventHandler = new PorkerEventHandler();
+            	MinecraftForge.EVENT_BUS.register(eventHandler);
                 
                 LanguageRegistry.addName(PorkerPortal, "Pork Land Portal");
                 LanguageRegistry.addName(FirePorker, "Piggy Fire");
@@ -176,8 +235,11 @@ public class PorkerCraft {
                 GameRegistry.registerBlock(PorkTreeLog);
                 GameRegistry.registerBlock(PorkTreeSapling);
                 
-          	    DimensionManager.registerProviderType(dimension, WorldProviderPorker.class, true);
+          	    //DimensionManager.registerProviderType(dimension, WorldProviderPorker.class, true);
+                DimensionManager.registerProviderType(dimension, WorldProviderPorker.class, true);
           	    DimensionManager.registerDimension(dimension, dimension);
+          	    
+          	    GameRegistry.registerWorldGenerator(new PorkerWorldGenerator());
           	    
           	    MainMenuAPI.registerMenu("PorkerCraft", PorkerMainMenu.class);
           	    

@@ -1,5 +1,11 @@
 package PorkerCraft.core.gen;
 
+import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.CAVE;
+import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.MINESHAFT;
+import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.RAVINE;
+import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.SCATTERED_FEATURE;
+import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.STRONGHOLD;
+import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.VILLAGE;
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.GLOWSTONE;
 
 import java.util.List;
@@ -7,6 +13,7 @@ import java.util.Random;
 import PorkerCraft.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkPosition;
@@ -21,6 +28,7 @@ import net.minecraft.world.gen.MapGenCaves;
 import net.minecraft.world.gen.MapGenRavine;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.feature.MapGenScatteredFeature;
+import net.minecraft.world.gen.feature.WorldGenDungeons;
 import net.minecraft.world.gen.feature.WorldGenGlowStone1;
 import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.structure.MapGenMineshaft;
@@ -44,12 +52,12 @@ private double[] noiseArray;
 private double[] stoneNoise = new double[256];
 private MapGenBase caveGenerator = new MapGenCaves();
 private MapGenStronghold strongholdGenerator = new MapGenStronghold();
-private MapGenVillage villageGenerator = new MapGenVillage();
 private MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
 private MapGenScatteredFeature scatteredFeatureGenerator = new MapGenScatteredFeature();
 private MapGenBase ravineGenerator = new MapGenRavine();
 private BiomeGenBase[] biomesForGeneration;
 private MapGenBossTempleAll mapGenTemple = new MapGenBossTempleAll();
+private MapGenPigVillage villageGenerator = new MapGenPigVillage();
 double[] noise3;
 double[] noise1;
 double[] noise2;
@@ -57,6 +65,14 @@ double[] noise5;
 double[] noise6;
 float[] parabolicField;
 int[][] field_73219_j = new int[32][32];
+{
+    caveGenerator = TerrainGen.getModdedMapGen(caveGenerator, CAVE);
+    strongholdGenerator = (MapGenStronghold) TerrainGen.getModdedMapGen(strongholdGenerator, STRONGHOLD);
+    villageGenerator = (MapGenPigVillage) TerrainGen.getModdedMapGen(villageGenerator, VILLAGE);
+    mineshaftGenerator = (MapGenMineshaft) TerrainGen.getModdedMapGen(mineshaftGenerator, MINESHAFT);
+    scatteredFeatureGenerator = (MapGenScatteredFeature) TerrainGen.getModdedMapGen(scatteredFeatureGenerator, SCATTERED_FEATURE);
+    ravineGenerator = TerrainGen.getModdedMapGen(ravineGenerator, RAVINE);
+}
 public ChunkProviderPorker(World par1World, long par2, boolean par4) {
 this.worldObj = par1World;
 this.mapFeaturesEnabled = true;
@@ -180,7 +196,7 @@ for (int var16 = 127; var16 >= 0; var16--)
                  var14 = 0;
                 
                  /** change to custom dirt **/
-                 var15 = (byte)PorkerCraft.PorkStone.blockID;//
+                 var15 = (byte)PorkerCraft.PorkDirt.blockID;//
          }
          else if ((var16 >= var5 - 4) && (var16 <= var5 + 1))
          {
@@ -243,7 +259,7 @@ this.mineshaftGenerator.generate(this, this.worldObj, par1, par2, var3);
 this.villageGenerator.generate(this, this.worldObj, par1, par2, var3);
 this.strongholdGenerator.generate(this, this.worldObj, par1, par2, var3);
 this.scatteredFeatureGenerator.generate(this, this.worldObj, par1, par2, var3);
-mapGenTemple.generate(rand, par1, par2, this.worldObj, this, this);
+//mapGenTemple.generate(rand, par1, par2, this.worldObj, this, this);
 }
 Chunk var4 = new Chunk(this.worldObj, var3, par1, par2);
 byte[] var5 = var4.getBiomeArray();
@@ -399,13 +415,50 @@ var11 = this.villageGenerator.generateStructuresInChunk(this.worldObj, this.rand
 this.strongholdGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
 this.scatteredFeatureGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
 }
+
+if (this.mapFeaturesEnabled) {
+this.mineshaftGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
+this.villageGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
+this.strongholdGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
+this.scatteredFeatureGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
+}
+
 if ((!var11) && (this.rand.nextInt(4) == 0))
+{
+int var12 = var4 + this.rand.nextInt(16) + 8;
+int var13 = this.rand.nextInt(128);
+int var14 = var5 + this.rand.nextInt(16) + 8;
+(new WorldGenLakes(Block.waterStill.blockID)).generate(this.worldObj, this.rand, var12, var13, var14);
+}
+
+if ((!var11) && (this.rand.nextInt(4) == 0))
+{
+int var12 = var4 + this.rand.nextInt(16) + 8;
+int var13 = this.rand.nextInt(120);
+int var14 = var5 + this.rand.nextInt(16) + 8;
+
+if (var13 < 63 || this.rand.nextInt(10) == 0) {
+(new WorldGenLakes(Block.lavaStill.blockID)).generate(this.worldObj, this.rand, var12, var13, var14);
+}
+}
+
+if ((!var11) && (this.rand.nextInt(4) == 0))
+{
+int var12 = var4 + this.rand.nextInt(16) + 8;
+int var13 = this.rand.nextInt(128);
+int var14 = var5 + this.rand.nextInt(16) + 8;
+
+if ((new WorldGenDungeons()).generate(this.worldObj, this.rand, var12, var13, var14)){}
+}
+
+
+/*if ((!var11) && (this.rand.nextInt(4) == 0))
 {
 int var12 = var4 + this.rand.nextInt(16) + 8;
 int var13 = this.rand.nextInt(150);
 int var14 = var5 + this.rand.nextInt(16) + 8;
 new WorldGenLakes(Block.waterStill.blockID).generate(this.worldObj, this.rand, var12, var13, var14);
-}
+}*/
 
 if ((!var11) && (this.rand.nextInt(4) == 0))
 {
@@ -468,8 +521,28 @@ public boolean unloadQueuedChunks()
 {
 return false;
 }
-public void recreateStructures(int i, int j)
+public boolean IsVillageGenrated(EntityPlayer player, int par1, int par2)
 {
+	if(this.villageGenerator != null && this.mapFeaturesEnabled){
+		player.addChatMessage("Generatin Village At: " + par1 + ", " + par2);
+        this.villageGenerator.generate(this, this.worldObj, par1, par2, (byte[])null);
+		
+		return true;
+	}
+	
+	return false;
+}
+
+public void recreateStructures(int par1, int par2)
+{
+    if (this.mapFeaturesEnabled)
+    {
+        this.mineshaftGenerator.generate(this, this.worldObj, par1, par2, (byte[])null);
+        this.villageGenerator.generate(this, this.worldObj, par1, par2, (byte[])null);
+        this.strongholdGenerator.generate(this, this.worldObj, par1, par2, (byte[])null);
+        this.scatteredFeatureGenerator.generate(this, this.worldObj, par1, par2, (byte[])null);
+        //mapGenTemple.generate(rand, par1, par2, this.worldObj, this, this);
+    }
 }
 @Override
 public void func_104112_b() {
