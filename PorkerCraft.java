@@ -10,6 +10,7 @@ import net.aetherteam.mainmenu_api.MainMenuAPI;
 import net.aetherteam.mainmenu_api.MenuBaseMinecraft;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
+import net.minecraft.block.BlockOreStorage;
 import net.minecraft.block.BlockSkull;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -21,6 +22,8 @@ import net.minecraft.entity.EntityEggInfo;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumArmorMaterial;
+import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemSaddle;
 import net.minecraft.item.ItemSkull;
@@ -29,6 +32,7 @@ import net.minecraft.src.ModLoader;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.MinecraftForge;
 import PorkerCraft.core.blocks.BlockFirePorker;
 import PorkerCraft.core.blocks.BlockPorkTreeLeaf;
@@ -41,6 +45,7 @@ import PorkerCraft.core.blocks.PorkObsidian;
 import PorkerCraft.core.blocks.PorkStone;
 import PorkerCraft.core.mainmenu.PorkerMainMenu;
 import PorkerCraft.core.proxy.CommonProxy;
+import PorkerCraft.core.registry.PigMenRegistry;
 import PorkerCraft.core.util.KeybindingHandler;
 import PorkerCraft.core.util.PorkerEventHandler;
 import PorkerCraft.core.util.PorkerWorldGenerator;
@@ -69,6 +74,8 @@ import PorkerCraft.core.gen.WorldGenGlowPig1;
 import PorkerCraft.core.gen.WorldGenPorkTree;
 import PorkerCraft.core.gen.WorldProviderPorker;
 import PorkerCraft.core.items.*;
+import PorkerCraft.core.items.armor.*;
+import PorkerCraft.core.items.tools.*;
 import PorkerCraft.core.mob.entity.*;
 import PorkerCraft.core.mob.render.*;
 import PorkerCraft.core.mob.model.*;
@@ -103,14 +110,31 @@ public class PorkerCraft {
         public static Block PorkerPortal;
         public static Block PorkObsidian;
         public static Block PorkDirt;
+        public static Block PigAtyliaOre;
+        public static Block PigAtyliaBlock;
         public static BlockFirePorker FirePorker;
         public static Item PorkAndGold;
+        public static Item PigAtyliaGem;
         public static BiomeGenBase PorkerLand;
         public static BiomeGenBase PigPlains;
         public static Block PorkTreeLeaf;
         public static Block PorkTreeLog;
         public static Block PorkTreeSapling;
         public static Item FlyingPigSaddle;
+        
+        public static final EnumToolMaterial PigAtyliaTools = EnumHelper.addToolMaterial("PIG_ATYLIA", 2, 573, 6.5f, 2, 9);
+        public static PigAtyliaPickaxe PigAtyliaPickaxe;
+        public static PigAtyliaAxe PigAtyliaAxe;
+        public static PigAtyliaSpade PigAtyliaSpade;
+        public static PigAtyliaHoe PigAtyliaHoe;
+        public static PigAtyliaSword PigAtyliaSword;
+        public static final EnumArmorMaterial PigAtyliaArmor = EnumHelper.addArmorMaterial("PIG_ATYLIA", 18, new int[]{2,7,5,3}, 11);
+		public static PigAtyliaHelmet PigAtyliaHelmet;
+		public static PigAtyliaChestplate PigAtyliaChestplate;
+		public static PigAtyliaLeggings PigAtyliaLeggings;
+		public static PigAtyliaBoots PigAtyliaBoots;
+
+		public static int PigAtyliaArmorSkin = 0;
         
         static URL jarLocation; // Root directory for mod
         static {
@@ -191,27 +215,46 @@ public class PorkerCraft {
     			while(EntityList.getStringFromID(startEntityId)!= null);
     			return startEntityId++;
     	}
+       
         
+       
         @Init
         public void load(FMLInitializationEvent event) {
                 proxy.registerRenderers();
                 
-                PorkerPortal = (new BlockPorkerPortal(3398).setUnlocalizedName("PorkerPortal"));
-                FirePorker = (BlockFirePorker)(new BlockFirePorker(3397)).setHardness(0.0F).setLightValue(1.0F).setUnlocalizedName("main:FirePorker"); 
                 PorkStone = (new PorkStone(249, Material.rock).setCreativeTab(CreativeTabs.tabBlock).setHardness(3.0F)).setUnlocalizedName("Stone O' Pork");
-                PorkObsidian = (new PorkObsidian(3395, Material.rock).setCreativeTab(CreativeTabs.tabBlock).setHardness(5.0F)).setUnlocalizedName("Obsidian O' Pork");
+                
                 PorkGrass = (new PorkGrass(241, Material.grass).setCreativeTab(CreativeTabs.tabBlock).setHardness(1.0F)).setUnlocalizedName("Bacon Grass");
                 PorkDirt = (new PorkDirt(242, Material.ground).setCreativeTab(CreativeTabs.tabBlock).setHardness(1.0F)).setUnlocalizedName("Dirt O' Pork");
                 
-                PorkTreeLeaf = new BlockPorkTreeLeaf(3394).setUnlocalizedName("PorkTreeLeaf").setCreativeTab(CreativeTabs.tabBlock);
-                PorkTreeLog = new BlockPorkTreeLog(3393).setUnlocalizedName("PorkerCraft:PorkTreeLogSide").setCreativeTab(CreativeTabs.tabBlock);
+                
                 PorkTreeSapling = new BlockPorkTreeSapling(3392, 5, Material.leaves).setUnlocalizedName("PorkerCraft:PorkTreeSapling").setCreativeTab(CreativeTabs.tabBlock);
+                PorkTreeLog = new BlockPorkTreeLog(3393).setUnlocalizedName("PorkerCraft:PorkTreeLogSide").setCreativeTab(CreativeTabs.tabBlock);
+                PorkTreeLeaf = new BlockPorkTreeLeaf(3394).setUnlocalizedName("PorkTreeLeaf").setCreativeTab(CreativeTabs.tabBlock);
+                
+                PorkObsidian = (new PorkObsidian(3395, Material.rock).setCreativeTab(CreativeTabs.tabBlock).setHardness(5.0F)).setUnlocalizedName("Obsidian O' Pork");
+                FirePorker = (BlockFirePorker)(new BlockFirePorker(3397)).setHardness(0.0F).setLightValue(1.0F).setUnlocalizedName("main:FirePorker");
+                PorkerPortal = (new BlockPorkerPortal(3398).setUnlocalizedName("PorkerPortal"));
+                PigAtyliaOre = new BlockPigAtyliaOre(3400);
+                PigAtyliaBlock = new PigAtyliaBlock(3401);
                 
                 PorkerLand = (new BiomeGenPorkerLand(24));
                 PigPlains = (new BiomeGenPorkerLand(25));
                 
-                PorkAndGold = (new ItemPorkAndGold(3396)).setUnlocalizedName("Pork And Gold").setCreativeTab(CreativeTabs.tabTools);
                 FlyingPigSaddle = (new ItemSaddleFlyingPig(3391)).setUnlocalizedName("Flying Pig Saddle");
+            	PigAtyliaGem = new ItemPigAtyliaGem(3392);
+            	PorkAndGold = (new ItemPorkAndGold(3396)).setUnlocalizedName("Pork And Gold").setCreativeTab(CreativeTabs.tabTools);
+                PigAtyliaPickaxe = new PigAtyliaPickaxe(3400);
+                PigAtyliaAxe = new PigAtyliaAxe(3401);
+                PigAtyliaSpade = new PigAtyliaSpade(3402);
+                PigAtyliaHoe = new PigAtyliaHoe(3403);
+                PigAtyliaSword = new PigAtyliaSword(3404);
+                PigAtyliaHelmet = new PigAtyliaHelmet(3405);
+                PigAtyliaChestplate = new PigAtyliaChestplate(3406);
+                PigAtyliaLeggings = new PigAtyliaLeggings(3407);
+                PigAtyliaBoots = new PigAtyliaBoots(3408);
+                
+                PigAtyliaArmorSkin = RenderingRegistry.addNewArmourRendererPrefix("pig_atylia"); // TODO this needs a texture
                 
                 /** Normal Dimension **/ //DimensionManager.registerProviderType(MainConfig.DimID, WorldProviderTutorial.class, true);
                 
@@ -229,6 +272,19 @@ public class PorkerCraft {
                 LanguageRegistry.addName(PorkTreeLog, "Pork Oak Log");
                 LanguageRegistry.addName(PorkAndGold, "Pork And Gold");
                 
+                LanguageRegistry.addName(PigAtyliaBlock, "Block of Pig Atylia");
+                LanguageRegistry.addName(PigAtyliaOre, "Pig Atylia Ore");
+                LanguageRegistry.addName(PigAtyliaGem, "Pig Atylia Gem");
+                LanguageRegistry.addName(PigAtyliaPickaxe, "Pig Atylia Pickaxe");
+                LanguageRegistry.addName(PigAtyliaAxe, "Pig Atylia Axe");
+                LanguageRegistry.addName(PigAtyliaSpade, "Pig Atylia Shovel");
+                LanguageRegistry.addName(PigAtyliaHoe, "Pig Atylia Hoe");
+                LanguageRegistry.addName(PigAtyliaSword, "Pig Atylia Sword");
+                LanguageRegistry.addName(PigAtyliaHelmet, "Pig Atylia Helmet");
+                LanguageRegistry.addName(PigAtyliaChestplate, "Pig Atylia Chestplate");
+                LanguageRegistry.addName(PigAtyliaLeggings, "Pig Atylia Leggings");
+                LanguageRegistry.addName(PigAtyliaBoots, "Pig Atylia Boots");
+                
                 GameRegistry.registerBlock(PorkStone);
                 //GameRegistry.registerBlock(PorkDirt);
                 GameRegistry.registerBlock(PorkGrass);
@@ -237,6 +293,8 @@ public class PorkerCraft {
                 GameRegistry.registerBlock(PorkTreeLeaf);
                 GameRegistry.registerBlock(PorkTreeLog);
                 GameRegistry.registerBlock(PorkTreeSapling);
+                GameRegistry.registerBlock(PigAtyliaOre);
+                GameRegistry.registerBlock(PigAtyliaBlock);
                 
           	    //DimensionManager.registerProviderType(dimension, WorldProviderPorker.class, true);
                 DimensionManager.registerProviderType(dimension, WorldProviderPorker.class, true);
@@ -264,6 +322,29 @@ public class PorkerCraft {
     		    GameRegistry.addRecipe(new ItemStack(this.PorkAndGold, 1), new Object[]{
     				"XXX", "X1X", "XXX", '1', Item.porkRaw, 'X', Item.goldNugget
     			});
+    		    // pig atylia block -> gem & gem -> block
+    		    GameRegistry.addShapelessRecipe(new ItemStack(PigAtyliaBlock), PigAtyliaGem,PigAtyliaGem,PigAtyliaGem,PigAtyliaGem,PigAtyliaGem,PigAtyliaGem,PigAtyliaGem,PigAtyliaGem,PigAtyliaGem);
+    		    GameRegistry.addShapelessRecipe(new ItemStack(PigAtyliaGem,9), PigAtyliaBlock);
+                // pick
+            	GameRegistry.addRecipe(new ItemStack(PigAtyliaPickaxe), "AAA"," S "," S ",Character.valueOf('A'),PigAtyliaGem,Character.valueOf('S'),Item.stick);
+            	// axe
+            	GameRegistry.addRecipe(new ItemStack(PigAtyliaAxe), " AA"," SA"," S ",Character.valueOf('A'),PigAtyliaGem,Character.valueOf('S'),Item.stick);
+            	GameRegistry.addRecipe(new ItemStack(PigAtyliaAxe), "AA ","AS "," S ",Character.valueOf('A'),PigAtyliaGem,Character.valueOf('S'),Item.stick);
+            	// spade        
+            	GameRegistry.addRecipe(new ItemStack(PigAtyliaSpade), "A","S","S",Character.valueOf('A'),PigAtyliaGem,Character.valueOf('S'),Item.stick);
+            	// hoe
+            	GameRegistry.addRecipe(new ItemStack(PigAtyliaHoe), "AA "," S "," S ",Character.valueOf('A'),PigAtyliaGem,Character.valueOf('S'),Item.stick);
+            	GameRegistry.addRecipe(new ItemStack(PigAtyliaHoe), " AA"," S "," S ",Character.valueOf('A'),PigAtyliaGem,Character.valueOf('S'),Item.stick);
+            	// sword
+            	GameRegistry.addRecipe(new ItemStack(PigAtyliaSword), "A","A","S",Character.valueOf('A'),PigAtyliaGem,Character.valueOf('S'),Item.stick);
+            	// helmet
+            	GameRegistry.addRecipe(new ItemStack(PigAtyliaHelmet), "AAA","A A",Character.valueOf('A'),PigAtyliaGem,Character.valueOf('S'),Item.stick);
+            	// chestplate
+            	GameRegistry.addRecipe(new ItemStack(PigAtyliaChestplate), "A A","AAA","AAA",Character.valueOf('A'),PigAtyliaGem,Character.valueOf('S'),Item.stick);
+            	// leggings
+            	GameRegistry.addRecipe(new ItemStack(PigAtyliaLeggings), "AAA","A A","A A",Character.valueOf('A'),PigAtyliaGem,Character.valueOf('S'),Item.stick);
+            	// boots
+            	GameRegistry.addRecipe(new ItemStack(PigAtyliaBoots), "A A","A A",Character.valueOf('A'),PigAtyliaGem,Character.valueOf('S'),Item.stick);
         }
         
         @PostInit
