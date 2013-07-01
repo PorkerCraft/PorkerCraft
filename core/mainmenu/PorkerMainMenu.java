@@ -106,7 +106,7 @@ public class PorkerMainMenu extends MenuBase
             }
             while (this.splashText.hashCode() == 125780783);
         }
-        catch (IOException ioexception)
+        catch (Exception exception)
         {
             ;
         }

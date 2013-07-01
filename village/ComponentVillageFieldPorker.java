@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.StructureComponent;
 
 public class ComponentVillageFieldPorker extends ComponentVillagePorker
 {
@@ -54,7 +55,7 @@ public class ComponentVillageFieldPorker extends ComponentVillagePorker
     public static ComponentVillageFieldPorker func_74900_a(ComponentVillageStartPiecePorker par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
         StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 13, 4, 9, par6);
-        return canVillageGoDeeper(structureboundingbox) && StructureComponentPorker.findIntersecting(par1List, structureboundingbox) == null ? new ComponentVillageFieldPorker(par0ComponentVillageStartPiece, par7, par2Random, structureboundingbox, par6) : null;
+        return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(par1List, structureboundingbox) == null ? new ComponentVillageFieldPorker(par0ComponentVillageStartPiece, par7, par2Random, structureboundingbox, par6) : null;
     }
 
     /**

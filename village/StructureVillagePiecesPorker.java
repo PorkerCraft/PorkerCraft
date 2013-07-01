@@ -21,6 +21,7 @@ import net.minecraft.world.gen.structure.ComponentVillageStartPiece;
 import net.minecraft.world.gen.structure.ComponentVillageTorch;
 import net.minecraft.world.gen.structure.ComponentVillageWoodHut;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieceWeight;
 
 public class StructureVillagePiecesPorker
@@ -199,10 +200,10 @@ public class StructureVillagePiecesPorker
 
             if (componentvillageporker != null)
             {
-                int j1 = (componentvillageporker.boundingBox.minX + componentvillageporker.boundingBox.maxX) / 2;
-                int k1 = (componentvillageporker.boundingBox.minZ + componentvillageporker.boundingBox.maxZ) / 2;
-                int l1 = componentvillageporker.boundingBox.maxX - componentvillageporker.boundingBox.minX;
-                int i2 = componentvillageporker.boundingBox.maxZ - componentvillageporker.boundingBox.minZ;
+                int j1 = (componentvillageporker.getBoundingBox().minX + componentvillageporker.getBoundingBox().maxX) / 2;
+                int k1 = (componentvillageporker.getBoundingBox().minZ + componentvillageporker.getBoundingBox().maxZ) / 2;
+                int l1 = componentvillageporker.getBoundingBox().maxX - componentvillageporker.getBoundingBox().minX;
+                int i2 = componentvillageporker.getBoundingBox().maxZ - componentvillageporker.getBoundingBox().minZ;
                 int j2 = l1 > i2 ? l1 : i2;
 
                 if (par0ComponentVillageStartPiece.getWorldChunkManager().areBiomesViable(j1, k1, j2 / 2 + 4, MapGenPigVillage.villageSpawnBiomes))
@@ -234,10 +235,10 @@ public class StructureVillagePiecesPorker
             if (structureboundingbox != null && structureboundingbox.minY > 10)
             {
                 ComponentVillagePathGenPorker componentvillagepathgen = new ComponentVillagePathGenPorker(par0ComponentVillageStartPiece, par7, par2Random, structureboundingbox, par6);
-                int j1 = (componentvillagepathgen.boundingBox.minX + componentvillagepathgen.boundingBox.maxX) / 2;
-                int k1 = (componentvillagepathgen.boundingBox.minZ + componentvillagepathgen.boundingBox.maxZ) / 2;
-                int l1 = componentvillagepathgen.boundingBox.maxX - componentvillagepathgen.boundingBox.minX;
-                int i2 = componentvillagepathgen.boundingBox.maxZ - componentvillagepathgen.boundingBox.minZ;
+                int j1 = (componentvillagepathgen.getBoundingBox().minX + componentvillagepathgen.getBoundingBox().maxX) / 2;
+                int k1 = (componentvillagepathgen.getBoundingBox().minZ + componentvillagepathgen.getBoundingBox().maxZ) / 2;
+                int l1 = componentvillagepathgen.getBoundingBox().maxX - componentvillagepathgen.getBoundingBox().minX;
+                int i2 = componentvillagepathgen.getBoundingBox().maxZ - componentvillagepathgen.getBoundingBox().minZ;
                 int j2 = l1 > i2 ? l1 : i2;
 
                 if (par0ComponentVillageStartPiece.getWorldChunkManager().areBiomesViable(j1, k1, j2 / 2 + 4, MapGenPigVillage.villageSpawnBiomes))
@@ -259,9 +260,9 @@ public class StructureVillagePiecesPorker
     /**
      * attempts to find a next Structure Component to be spawned
      */
-    static StructureComponentPorker getNextStructureComponentPorker(ComponentVillageStartPiecePorker par1StructureComponent, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
+    static StructureComponent getNextStructureComponentPorker(ComponentVillageStartPiecePorker par1StructureComponent, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
-        return getNextStructureComponentPorker(par1StructureComponent, par1List, par2Random, par3, par4, par5, par6, par7);
+        return getNextVillageStructureComponentPorker(par1StructureComponent, par1List, par2Random, par3, par4, par5, par6, par7);
     }
 
     static ComponentVillagePathGenPorker getNextStructureComponentPorkerVillagePath(ComponentVillageStartPiecePorker par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)

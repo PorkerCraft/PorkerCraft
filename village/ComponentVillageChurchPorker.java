@@ -21,7 +21,7 @@ public class ComponentVillageChurchPorker extends ComponentVillagePorker
     public static ComponentVillageChurchPorker func_74919_a(ComponentVillageStartPiecePorker par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
         StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 5, 12, 9, par6);
-        return canVillageGoDeeper(structureboundingbox) && StructureComponentPorker.findIntersecting(par1List, structureboundingbox) == null ? new ComponentVillageChurchPorker(par0ComponentVillageStartPiece, par7, par2Random, structureboundingbox, par6) : null;
+        return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(par1List, structureboundingbox) == null ? new ComponentVillageChurchPorker(par0ComponentVillageStartPiece, par7, par2Random, structureboundingbox, par6) : null;
     }
 
     /**

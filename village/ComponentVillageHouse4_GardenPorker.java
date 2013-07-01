@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.StructureComponent;
 
 public class ComponentVillageHouse4_GardenPorker extends ComponentVillagePorker
 {
@@ -22,7 +23,7 @@ public class ComponentVillageHouse4_GardenPorker extends ComponentVillagePorker
     public static ComponentVillageHouse4_GardenPorker func_74912_a(ComponentVillageStartPiecePorker par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
         StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 5, 6, 5, par6);
-        return StructureComponentPorker.findIntersecting(par1List, structureboundingbox) != null ? null : new ComponentVillageHouse4_GardenPorker(par0ComponentVillageStartPiece, par7, par2Random, structureboundingbox, par6);
+        return StructureComponent.findIntersecting(par1List, structureboundingbox) != null ? null : new ComponentVillageHouse4_GardenPorker(par0ComponentVillageStartPiece, par7, par2Random, structureboundingbox, par6);
     }
 
     /**

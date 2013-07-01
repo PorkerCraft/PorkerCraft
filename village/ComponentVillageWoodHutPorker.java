@@ -6,6 +6,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.StructureComponent;
 
 public class ComponentVillageWoodHutPorker extends ComponentVillagePorker
 {
@@ -25,7 +26,7 @@ public class ComponentVillageWoodHutPorker extends ComponentVillagePorker
     public static ComponentVillageWoodHutPorker func_74908_a(ComponentVillageStartPiecePorker par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
         StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 4, 6, 5, par6);
-        return canVillageGoDeeper(structureboundingbox) && StructureComponentPorker.findIntersecting(par1List, structureboundingbox) == null ? new ComponentVillageWoodHutPorker(par0ComponentVillageStartPiece, par7, par2Random, structureboundingbox, par6) : null;
+        return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(par1List, structureboundingbox) == null ? new ComponentVillageWoodHutPorker(par0ComponentVillageStartPiece, par7, par2Random, structureboundingbox, par6) : null;
     }
 
     /**

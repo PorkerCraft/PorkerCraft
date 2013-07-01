@@ -25,11 +25,11 @@ public class CompinentVillagePathGenPorker extends ComponentVillageRoadPiecePork
     /**
      * Initiates construction of the Structure Component picked, at the current Location of StructGen
      */
-    public void buildComponent(StructureComponentPorker par1StructureComponent, List par2List, Random par3Random)
+    public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
     {
         boolean flag = false;
         int i;
-        StructureComponentPorker structurecomponent1;
+        StructureComponent structurecomponent1;
 
         for (i = par3Random.nextInt(5); i < this.averageGroundLevel - 8; i += 2 + par3Random.nextInt(5))
         {
@@ -37,7 +37,7 @@ public class CompinentVillagePathGenPorker extends ComponentVillageRoadPiecePork
 
             if (structurecomponent1 != null)
             {
-                i += Math.max(structurecomponent1.boundingBox.getXSize(), structurecomponent1.boundingBox.getZSize());
+                i += Math.max(structurecomponent1.getBoundingBox().getXSize(), structurecomponent1.getBoundingBox().getZSize());
                 flag = true;
             }
         }
@@ -48,7 +48,7 @@ public class CompinentVillagePathGenPorker extends ComponentVillageRoadPiecePork
 
             if (structurecomponent1 != null)
             {
-                i += Math.max(structurecomponent1.boundingBox.getXSize(), structurecomponent1.boundingBox.getZSize());
+                i += Math.max(structurecomponent1.getBoundingBox().getXSize(), structurecomponent1.getBoundingBox().getZSize());
                 flag = true;
             }
         }
@@ -58,16 +58,16 @@ public class CompinentVillagePathGenPorker extends ComponentVillageRoadPiecePork
             switch (this.coordBaseMode)
             {
                 case 0:
-                    StructureVillagePiecesPorker.getNextStructureComponentPorkerVillagePath((ComponentVillageStartPiecePorker)par1StructureComponent, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, 1, this.getComponentType());
+                    StructureVillagePiecesPorker.getNextStructureComponentPorkerVillagePath((ComponentVillageStartPiecePorker)par1StructureComponent, par2List, par3Random, this.getBoundingBox().minX - 1, this.getBoundingBox().minY, this.getBoundingBox().maxZ - 2, 1, this.getComponentType());
                     break;
                 case 1:
-                    StructureVillagePiecesPorker.getNextStructureComponentPorkerVillagePath((ComponentVillageStartPiecePorker)par1StructureComponent, par2List, par3Random, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.minZ - 1, 2, this.getComponentType());
+                    StructureVillagePiecesPorker.getNextStructureComponentPorkerVillagePath((ComponentVillageStartPiecePorker)par1StructureComponent, par2List, par3Random, this.getBoundingBox().minX, this.getBoundingBox().minY, this.getBoundingBox().minZ - 1, 2, this.getComponentType());
                     break;
                 case 2:
-                    StructureVillagePiecesPorker.getNextStructureComponentPorkerVillagePath((ComponentVillageStartPiecePorker)par1StructureComponent, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.minZ, 1, this.getComponentType());
+                    StructureVillagePiecesPorker.getNextStructureComponentPorkerVillagePath((ComponentVillageStartPiecePorker)par1StructureComponent, par2List, par3Random, this.getBoundingBox().minX - 1, this.getBoundingBox().minY, this.getBoundingBox().minZ, 1, this.getComponentType());
                     break;
                 case 3:
-                    StructureVillagePiecesPorker.getNextStructureComponentPorkerVillagePath((ComponentVillageStartPiecePorker)par1StructureComponent, par2List, par3Random, this.boundingBox.maxX - 2, this.boundingBox.minY, this.boundingBox.minZ - 1, 2, this.getComponentType());
+                    StructureVillagePiecesPorker.getNextStructureComponentPorkerVillagePath((ComponentVillageStartPiecePorker)par1StructureComponent, par2List, par3Random, this.getBoundingBox().maxX - 2, this.getBoundingBox().minY, this.getBoundingBox().minZ - 1, 2, this.getComponentType());
             }
         }
 
@@ -76,16 +76,16 @@ public class CompinentVillagePathGenPorker extends ComponentVillageRoadPiecePork
             switch (this.coordBaseMode)
             {
                 case 0:
-                    StructureVillagePiecesPorker.getNextStructureComponentPorkerVillagePath((ComponentVillageStartPiecePorker)par1StructureComponent, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, 3, this.getComponentType());
+                    StructureVillagePiecesPorker.getNextStructureComponentPorkerVillagePath((ComponentVillageStartPiecePorker)par1StructureComponent, par2List, par3Random, this.getBoundingBox().maxX + 1, this.getBoundingBox().minY, this.getBoundingBox().maxZ - 2, 3, this.getComponentType());
                     break;
                 case 1:
-                    StructureVillagePiecesPorker.getNextStructureComponentPorkerVillagePath((ComponentVillageStartPiecePorker)par1StructureComponent, par2List, par3Random, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.maxZ + 1, 0, this.getComponentType());
+                    StructureVillagePiecesPorker.getNextStructureComponentPorkerVillagePath((ComponentVillageStartPiecePorker)par1StructureComponent, par2List, par3Random, this.getBoundingBox().minX, this.getBoundingBox().minY, this.getBoundingBox().maxZ + 1, 0, this.getComponentType());
                     break;
                 case 2:
-                    StructureVillagePiecesPorker.getNextStructureComponentPorkerVillagePath((ComponentVillageStartPiecePorker)par1StructureComponent, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.minZ, 3, this.getComponentType());
+                    StructureVillagePiecesPorker.getNextStructureComponentPorkerVillagePath((ComponentVillageStartPiecePorker)par1StructureComponent, par2List, par3Random, this.getBoundingBox().maxX + 1, this.getBoundingBox().minY, this.getBoundingBox().minZ, 3, this.getComponentType());
                     break;
                 case 3:
-                    StructureVillagePiecesPorker.getNextStructureComponentPorkerVillagePath((ComponentVillageStartPiecePorker)par1StructureComponent, par2List, par3Random, this.boundingBox.maxX - 2, this.boundingBox.minY, this.boundingBox.maxZ + 1, 0, this.getComponentType());
+                    StructureVillagePiecesPorker.getNextStructureComponentPorkerVillagePath((ComponentVillageStartPiecePorker)par1StructureComponent, par2List, par3Random, this.getBoundingBox().maxX - 2, this.getBoundingBox().minY, this.getBoundingBox().maxZ + 1, 0, this.getComponentType());
             }
         }
     }
@@ -96,7 +96,7 @@ public class CompinentVillagePathGenPorker extends ComponentVillageRoadPiecePork
         {
             StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 3, 3, i1, par6);
 
-            if (StructureComponentPorker.findIntersecting(par1List, structureboundingbox) == null)
+            if (StructureComponent.findIntersecting(par1List, structureboundingbox) == null)
             {
                 return structureboundingbox;
             }
@@ -113,9 +113,9 @@ public class CompinentVillagePathGenPorker extends ComponentVillageRoadPiecePork
     {
         int i = this.getBiomeSpecificBlock(Block.gravel.blockID, 0);
 
-        for (int j = this.boundingBox.minX; j <= this.boundingBox.maxX; ++j)
+        for (int j = this.getBoundingBox().minX; j <= this.getBoundingBox().maxX; ++j)
         {
-            for (int k = this.boundingBox.minZ; k <= this.boundingBox.maxZ; ++k)
+            for (int k = this.getBoundingBox().minZ; k <= this.getBoundingBox().maxZ; ++k)
             {
                 if (par3StructureBoundingBox.isVecInside(j, 64, k))
                 {

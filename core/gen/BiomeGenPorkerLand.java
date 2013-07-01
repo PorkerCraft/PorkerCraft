@@ -54,7 +54,7 @@ this.theBiomeDecorator.treesPerChunk = 25;
 this.WorldGenPorkTrees = new WorldGenPorkTree(false);
 this.topBlock = ((byte)PorkerCraft.PorkGrass.blockID);
 this.fillerBlock = ((byte)PorkerCraft.PorkStone.blockID);
-this.setBiomeName("The Land Of The Piggys");
+this.setBiomeName("The Land Of The Piggys #"+par1);
 this.spawnableMonsterList.add(new SpawnListEntry(EntityPig.class, 100, 4, 4));
 this.spawnableMonsterList.add(new SpawnListEntry(EntityFlyingPig.class, 100, 4, 4));
 this.spawnableMonsterList.add(new SpawnListEntry(EntityPigGod.class, 100, 4, 4));

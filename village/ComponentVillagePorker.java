@@ -13,7 +13,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.terraingen.BiomeEvent;
 
-public abstract class ComponentVillagePorker extends StructureComponentPorker
+public abstract class ComponentVillagePorker extends StructureComponent
 {
     /** The number of villagers that have been spawned in this component. */
     private int villagersSpawned;
@@ -30,7 +30,7 @@ public abstract class ComponentVillagePorker extends StructureComponentPorker
     /**
      * Gets the next village component, with the bounding box shifted -1 in the X and Z direction.
      */
-    protected StructureComponentPorker getNextComponentNN(ComponentVillageStartPiecePorker par1StructureComponent, List par2List, Random par3Random, int par4, int par5)
+    protected StructureComponent getNextComponentNN(ComponentVillageStartPiecePorker par1StructureComponent, List par2List, Random par3Random, int par4, int par5)
     {
         switch (this.coordBaseMode)
         {
@@ -50,7 +50,7 @@ public abstract class ComponentVillagePorker extends StructureComponentPorker
     /**
      * Gets the next village component, with the bounding box shifted +1 in the X and Z direction.
      */
-    protected StructureComponentPorker getNextComponentPP(ComponentVillageStartPiecePorker par1StructureComponent, List par2List, Random par3Random, int par4, int par5)
+    protected StructureComponent getNextComponentPP(ComponentVillageStartPiecePorker par1StructureComponent, List par2List, Random par3Random, int par4, int par5)
     {
         switch (this.coordBaseMode)
         {

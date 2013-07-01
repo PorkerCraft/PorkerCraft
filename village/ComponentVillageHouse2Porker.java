@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraftforge.common.ChestGenHooks;
 
 public class ComponentVillageHouse2Porker extends ComponentVillagePorker
@@ -29,7 +30,7 @@ public class ComponentVillageHouse2Porker extends ComponentVillagePorker
     public static ComponentVillageHouse2Porker func_74915_a(ComponentVillageStartPiecePorker par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, int par6, int par7)
     {
         StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 10, 6, 7, par6);
-        return canVillageGoDeeper(structureboundingbox) && StructureComponentPorker.findIntersecting(par1List, structureboundingbox) == null ? new ComponentVillageHouse2Porker(par0ComponentVillageStartPiece, par7, par2Random, structureboundingbox, par6) : null;
+        return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(par1List, structureboundingbox) == null ? new ComponentVillageHouse2Porker(par0ComponentVillageStartPiece, par7, par2Random, structureboundingbox, par6) : null;
     }
 
     /**
