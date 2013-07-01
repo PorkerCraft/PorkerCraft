@@ -88,6 +88,9 @@ public class PorkerCraft {
         @SidedProxy(clientSide="PorkerCraft.core.proxy.ClientProxy", serverSide="PorkerCraft.core.proxy.CommonProxy")
         public static CommonProxy proxy;
         
+        @Mod.PreInit
+        public void PreLoad(FMLPreInitializationEvent e) { MinecraftForge.EVENT_BUS.register(new PorkerSounds());}
+        
         @PreInit
         public void preInit(FMLPreInitializationEvent event) {
 

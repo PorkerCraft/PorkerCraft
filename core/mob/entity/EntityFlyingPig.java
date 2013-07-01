@@ -45,7 +45,7 @@ public class EntityFlyingPig extends EntityPorkerMobFlying {
     public EntityFlyingPig(World par1World)
     {
         super(par1World);
-        this.texture = "/PorkerCraft/mob/pigFly.png";
+        this.texture = "/mods/PorkerCraft/mob/pigFly.png";
         this.setSize(0.9F, 0.9F);
         this.setWillPigFly(true);
         this.getNavigator().setAvoidsWater(true);

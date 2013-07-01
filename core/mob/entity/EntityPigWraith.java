@@ -35,7 +35,7 @@ public class EntityPigWraith extends EntityFlying implements IMob
     public EntityPigWraith(World par1World)
     {
         super(par1World);
-        this.texture = "/PorkerCraft/mob/pigWraith.png";  
+        this.texture = "/mods/PorkerCraft/mob/pigWraith.png";  
         this.isImmuneToFire = false;
         this.experienceValue = 5;
     }
@@ -49,11 +49,9 @@ public class EntityPigWraith extends EntityFlying implements IMob
         {
             return false;
         }
-        //else if (par1DamageSource.getEntity() instanceof EntityPlayer)
-        else if ("fireball".equals(par1DamageSource.getDamageType()) && par1DamageSource.getEntity() instanceof EntityPlayer)
+        else if ("melee".equals(par1DamageSource.getDamageType()) && par1DamageSource.getEntity() instanceof EntityPlayer)
         {
             super.attackEntityFrom(par1DamageSource, 1000);
-            //((EntityPlayer)par1DamageSource.getEntity()).triggerAchievement(AchievementList.ghast);
             return true;
         }
         else
@@ -106,7 +104,6 @@ public class EntityPigWraith extends EntityFlying implements IMob
     {
         super.onUpdate();
         byte b0 = this.dataWatcher.getWatchableObjectByte(16);
-        //this.texture = b0 == 1 ? "/mob/ghast_fire.png" : "/mob/ghast.png";
     }
 
     protected void updateEntityActionState()
@@ -172,34 +169,6 @@ public class EntityPigWraith extends EntityFlying implements IMob
             double d6 = this.targetedEntity.boundingBox.minY + (double)(this.targetedEntity.height / 2.0F) - (this.posY + (double)(this.height / 2.0F));
             double d7 = this.targetedEntity.posZ - this.posZ;
             this.renderYawOffset = this.rotationYaw = -((float)Math.atan2(d5, d7)) * 180.0F / (float)Math.PI;
-
-            /*if (this.canEntityBeSeen(this.targetedEntity))
-            {
-                if (this.attackCounter == 10)
-                {
-                    this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1007, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
-                }
-
-                ++this.attackCounter;
-
-                if (this.attackCounter == 20)
-                {
-                    this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1008, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
-                    EntityLargeFireball entitylargefireball = new EntityLargeFireball(this.worldObj, this, d5, d6, d7);
-                    entitylargefireball.field_92057_e = this.explosionStrength;
-                    double d8 = 4.0D;
-                    Vec3 vec3 = this.getLook(1.0F);
-                    entitylargefireball.posX = this.posX + vec3.xCoord * d8;
-                    entitylargefireball.posY = this.posY + (double)(this.height / 2.0F) + 0.5D;
-                    entitylargefireball.posZ = this.posZ + vec3.zCoord * d8;
-                    this.worldObj.spawnEntityInWorld(entitylargefireball);
-                    this.attackCounter = -40;
-                }
-            }
-            else if (this.attackCounter > 0)
-            {
-                --this.attackCounter;
-            }*/
         }
         else
         {
@@ -251,7 +220,7 @@ public class EntityPigWraith extends EntityFlying implements IMob
      */
     protected String getLivingSound()
     {
-        return "";
+        return "porkercraft.wraith.living";
     }
 
     /**

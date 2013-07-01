@@ -49,7 +49,7 @@ public class KeybindingHandler extends KeyHandler
 			if(kb.keyCode == PigFlyUp.keyCode)
 			{			
 				//world.playSoundFX(mc.thePlayer, "wraith1", 1.0f, 1.0f);
-				mc.sndManager.playSoundFX("mob.PorkerCraft.wraith1", 1.0F, 1.0F);
+				mc.sndManager.playSoundFX("porkercraft.wraith.living", 1.0F, 1.0F);
 			}
 		}
 	}

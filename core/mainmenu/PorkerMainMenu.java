@@ -69,7 +69,7 @@ public class PorkerMainMenu extends MenuBase
     private String field_92025_p;
 
     /** An array of all the paths to the panorama pictures. */
-    private static final String[] titlePanoramaPaths = new String[] {"/PorkerCraft/bg/panorama0.png", "/PorkerCraft/bg/panorama1.png", "/PorkerCraft/bg/panorama2.png", "/PorkerCraft/bg/panorama3.png", "/PorkerCraft/bg/panorama4.png", "/PorkerCraft/bg/panorama5.png"};
+    private static final String[] titlePanoramaPaths = new String[] {"/mods/PorkerCraft/bg/panorama0.png", "/mods/PorkerCraft/bg/panorama1.png", "/mods/PorkerCraft/bg/panorama2.png", "/mods/PorkerCraft/bg/panorama3.png", "/mods/PorkerCraft/bg/panorama4.png", "/mods/PorkerCraft/bg/panorama5.png"};
     public static final String field_96138_a = "Please click " + EnumChatFormatting.UNDERLINE + "here" + EnumChatFormatting.RESET + " for more information.";
     private int field_92024_r;
     private int field_92023_s;
@@ -87,7 +87,7 @@ public class PorkerMainMenu extends MenuBase
         try
         {
             ArrayList arraylist = new ArrayList();
-            bufferedreader = new BufferedReader(new InputStreamReader(PorkerMainMenu.class.getResourceAsStream("/title/splashes.txt"), Charset.forName("UTF-8")));
+            bufferedreader = new BufferedReader(new InputStreamReader(PorkerMainMenu.class.getResourceAsStream("/mods/PorkerCraft/title/splashes.txt"), Charset.forName("UTF-8")));
             String s;
 
             while ((s = bufferedreader.readLine()) != null)
@@ -539,7 +539,7 @@ public class PorkerMainMenu extends MenuBase
         byte b0 = 30;
         this.drawGradientRect(0, 0, this.width, this.height, -2130706433, 16777215);
         this.drawGradientRect(0, 0, this.width, this.height, 0, Integer.MIN_VALUE);
-        this.mc.renderEngine.bindTexture("/PorkerCraft/title/mclogo.png");
+        this.mc.renderEngine.bindTexture("/mods/PorkerCraft/title/mclogo.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         if ((double)this.updateCounter < 1.0E-4D)
@@ -673,6 +673,6 @@ public class PorkerMainMenu extends MenuBase
 	
 	public String getIconPath()
 	{
-		return "/PorkerCraft/icons/PorkerCraft.png";
+		return "/mods/PorkerCraft/icons/PorkerCraft.png";
 	}
 }

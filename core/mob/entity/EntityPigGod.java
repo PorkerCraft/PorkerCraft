@@ -42,9 +42,9 @@ public class EntityPigGod extends EntityPorkerMob {
 	
 	public EntityPigGod(World par1World) {
 		super(par1World);
-		this.setSize(1.0F, 1.0F);
+		this.setSize(1.2F, 3.0F);
         float f = 0.4F;
-		this.texture = "/PorkerCraft/mob/pigGod.png";
+		this.texture = "/mods/PorkerCraft/mob/pigGod.png";
 		this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIWander(this, f));
         this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));

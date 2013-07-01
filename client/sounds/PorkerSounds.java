@@ -15,5 +15,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class PorkerSounds
 {
-	private static String[] soundNames = { "wraith1.ogg", "wraith2.ogg", "wraith3.ogg", "wraithdying1.ogg", "wraithdying2.ogg", "wraithurt1.ogg", "wraithurt2.ogg" };
+	  @ForgeSubscribe
+	  public void onSound(SoundLoadEvent event)
+	  {
+	    try
+	    {
+	      event.manager.soundPoolSounds.addSound("porkercraft/wraith/living1.ogg", PorkerCraft.class.getResource("PorkerCraft/Mobs/Wraith/wraith1.ogg"));
+	      event.manager.soundPoolSounds.addSound("porkercraft/wraith/living2.ogg", PorkerCraft.class.getResource("PorkerCraft/Mobs/Wraith/wraith2.ogg"));
+	      event.manager.soundPoolSounds.addSound("porkercraft/wraith/living3.ogg", PorkerCraft.class.getResource("PorkerCraft/Mobs/Wraith/wraith3.ogg"));
+	    }
+	    catch (Exception e)
+	    {
+	      System.err.println("[Porkercraft] Failed to register one or more sounds.");
+	    }
+	  }
 }

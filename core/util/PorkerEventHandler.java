@@ -37,11 +37,11 @@ if(event.world.getBlockId(event.X, event.Y, event.Z) == PorkerCraft.PorkTreeSapl
 }
 }
 
-@SideOnly(Side.CLIENT)
+/*@SideOnly(Side.CLIENT)
 @ForgeSubscribe
 public void onSoundLoad(SoundLoadEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
         mc.installResource("sound3/mob/PorkerCraft/wraith1.ogg",
         new File(mc.mcDataDir, "resources/sound3/mob/PorkerCraft/wraith1.ogg"));
-}
+}*/
 }

@@ -102,7 +102,7 @@ public class EntityPigMen extends EntityAgeable implements INpc, IMerchant
         this.isPlaying = false;
         this.villageObj = null;
         this.setProfession(par2);
-        this.texture = "/PorkerCraft/mob/PigMen/default.png";
+        this.texture = "/mods/PorkerCraft/mob/PigMen/default.png";
         this.moveSpeed = 0.5F;
         this.setSize(0.6F, 1.8F);
         this.getNavigator().setBreakDoors(true);

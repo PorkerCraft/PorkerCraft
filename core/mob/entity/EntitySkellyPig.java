@@ -42,7 +42,7 @@ public class EntitySkellyPig extends EntityMob implements IRangedAttackMob
     public EntitySkellyPig(World par1World)
     {
         super(par1World);
-        this.texture = "/PorkerCraft/mob/skellyPig.png";
+        this.texture = "mods/PorkerCraft/mob/skellyPig.png";
         this.moveSpeed = 0.25F;
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIRestrictSun(this));
