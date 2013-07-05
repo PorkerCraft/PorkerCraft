@@ -36,7 +36,7 @@ Use of this mod to be installed, manually or automatically, is given to the user
 This mod may only be distributed where uploaded, mirrored, or otherwise linked to by the owner solely. All mirrors of this mod must have advance written permission from the owner. ANY attempts to make money off of this mod(selling, selling modified versions, adfly, sharecash, etc.) are STRICTLY FORBIDDEN, and the owner may claim damages or take other action to rectify the situation.
 
 4. Derivative Works/Modification
-This mod is provided freely and may NOT be decompiled and modified for private use. Public distribution of modified versions of this mod are FORBIDDEN unless the Phoenix modding team has given you permission and may be subject to certain terms.
+This mod is provided freely and may NOT be decompiled and modified for private use. Public distribution of modified versions of this mod are FORBIDDEN unless the Porker modding team has given you permission and may be subject to certain terms.
 
 5. Modpacks
 This mod may not be used in any modpacks unless written permission is shown and credit goes to the makers of the mod.
