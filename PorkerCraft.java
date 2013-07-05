@@ -4,6 +4,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.swing.plaf.basic.BasicSplitPaneUI.FocusHandler;
+
 import org.lwjgl.input.Keyboard;
 
 import net.aetherteam.mainmenu_api.MainMenuAPI;
@@ -41,7 +43,7 @@ import PorkerCraft.core.blocks.BlockPorkTreeSapling;
 import PorkerCraft.core.blocks.BlockPorkerPortal;
 import PorkerCraft.core.blocks.PorkDirt;
 import PorkerCraft.core.blocks.PorkGrass;
-import PorkerCraft.core.blocks.PorkObsidian;
+import PorkerCraft.core.blocks.PorkBlock;
 import PorkerCraft.core.blocks.PorkStone;
 import PorkerCraft.core.mainmenu.PorkerMainMenu;
 import PorkerCraft.core.proxy.CommonProxy;
@@ -108,7 +110,7 @@ public class PorkerCraft {
         public static Block PorkStone;
         public static Block PorkGrass;
         public static Block PorkerPortal;
-        public static Block PorkObsidian;
+        public static Block PorkBlock;
         public static Block PorkDirt;
         public static Block PigAtyliaOre;
         public static Block PigAtyliaBlock;
@@ -220,6 +222,12 @@ public class PorkerCraft {
        
         @Init
         public void load(FMLInitializationEvent event) {
+        	    LanguageRegistry.instance().addStringLocalization("entity.EntityPigGod.name", "en_US", "Pig God");
+        	    LanguageRegistry.instance().addStringLocalization("entity.EntityFlyingPig.name", "en_US", "Flying Pig");
+        	    LanguageRegistry.instance().addStringLocalization("entity.EntitySkellyPig.name", "en_US", "Skelly Pig");
+        	    LanguageRegistry.instance().addStringLocalization("entity.EntityPigMen.name", "en_US", "Pig Men");
+        	    LanguageRegistry.instance().addStringLocalization("entity.EntityPigWraith.name", "en_US", "Pig Wraith");
+        	
                 proxy.registerRenderers();
                 
                 PorkStone = (new PorkStone(249, Material.rock).setCreativeTab(CreativeTabs.tabBlock).setHardness(3.0F)).setUnlocalizedName("Stone O' Pork");
@@ -232,7 +240,7 @@ public class PorkerCraft {
                 PorkTreeLog = new BlockPorkTreeLog(3393).setUnlocalizedName("PorkerCraft:PorkTreeLogSide").setCreativeTab(CreativeTabs.tabBlock);
                 PorkTreeLeaf = new BlockPorkTreeLeaf(3394).setUnlocalizedName("PorkTreeLeaf").setCreativeTab(CreativeTabs.tabBlock);
                 
-                PorkObsidian = (new PorkObsidian(3395, Material.rock).setCreativeTab(CreativeTabs.tabBlock).setHardness(5.0F)).setUnlocalizedName("Obsidian O' Pork");
+                PorkBlock = (new PorkBlock(3395, Material.rock).setCreativeTab(CreativeTabs.tabBlock).setHardness(5.0F)).setUnlocalizedName("Obsidian O' Pork");
                 FirePorker = (BlockFirePorker)(new BlockFirePorker(3397)).setHardness(0.0F).setLightValue(1.0F).setUnlocalizedName("main:FirePorker");
                 PorkerPortal = (new BlockPorkerPortal(3398).setUnlocalizedName("PorkerPortal"));
                 PigAtyliaOre = new BlockPigAtyliaOre(3400);
@@ -264,7 +272,7 @@ public class PorkerCraft {
                 LanguageRegistry.addName(PorkerPortal, "Pork Land Portal");
                 LanguageRegistry.addName(FirePorker, "Piggy Fire");
                 LanguageRegistry.addName(PorkStone, "Stone O' Pork");
-                LanguageRegistry.addName(PorkObsidian, "Obsidian O' Pork");
+                LanguageRegistry.addName(PorkBlock, "Obsidian O' Pork");
                 LanguageRegistry.addName(PorkGrass, "Bacon Grass");
                 LanguageRegistry.addName(PorkDirt, "Dirt O' Pork");
                 LanguageRegistry.addName(PorkTreeSapling, "Pork Oak Sapling");
@@ -289,7 +297,7 @@ public class PorkerCraft {
                 //GameRegistry.registerBlock(PorkDirt);
                 GameRegistry.registerBlock(PorkGrass);
                 GameRegistry.registerBlock(FirePorker);
-                GameRegistry.registerBlock(PorkObsidian);
+                GameRegistry.registerBlock(PorkBlock);
                 GameRegistry.registerBlock(PorkTreeLeaf);
                 GameRegistry.registerBlock(PorkTreeLog);
                 GameRegistry.registerBlock(PorkTreeSapling);
@@ -313,10 +321,10 @@ public class PorkerCraft {
           	    MinecraftForge.setBlockHarvestLevel(PorkGrass, "shovel", 1);
           	    MinecraftForge.setBlockHarvestLevel(PorkDirt, "shovel", 1);
           	    MinecraftForge.setBlockHarvestLevel(PorkStone, "pickaxe", 1);
-          	    MinecraftForge.setBlockHarvestLevel(PorkObsidian, "pickaxe", 3); 
+          	    MinecraftForge.setBlockHarvestLevel(PorkBlock, "pickaxe", 3); 
           	    MinecraftForge.setBlockHarvestLevel(PorkTreeLog, "axe", 0); 
           	    
-    		    GameRegistry.addRecipe(new ItemStack(this.PorkObsidian, 1), new Object[]{
+    		    GameRegistry.addRecipe(new ItemStack(this.PorkBlock, 1), new Object[]{
     				"XXX", "X1X", "XXX", '1', Block.obsidian, 'X', Item.porkRaw
     			});
     		    GameRegistry.addRecipe(new ItemStack(this.PorkAndGold, 1), new Object[]{

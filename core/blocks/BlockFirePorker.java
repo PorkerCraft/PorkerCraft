@@ -304,7 +304,7 @@ public class BlockFirePorker extends BlockFire {
 
 	public void onBlockAdded(World par1World, int par2, int par3, int par4) {
 		/** Change these to your portal frame and Portal block **/
-		if ((par1World.getBlockId(par2, par3 - 1, par4) != PorkerCraft.PorkObsidian.blockID)
+		if ((par1World.getBlockId(par2, par3 - 1, par4) != PorkerCraft.PorkBlock.blockID)
 				|| (!BlockPorkerPortal.tryToCreatePortal(par1World, par2, par3, par4))) {
 			if ((!par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4))
 					&& (!canNeighborBurn(par1World, par2, par3, par4))) {

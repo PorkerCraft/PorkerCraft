@@ -67,7 +67,7 @@ public void placeInPortal(Entity par1Entity, double par2, double par4, double pa
                                          boolean flag = j1 < 0;
                                         
                                          /** change this block **/
-                                         this.worldServerInstance.setBlock(k1, l1, i2, flag ? PorkerCraft.PorkObsidian.blockID : 0);
+                                         this.worldServerInstance.setBlock(k1, l1, i2, flag ? PorkerCraft.PorkBlock.blockID : 0);
                                  }
                          }
                  }
@@ -413,7 +413,7 @@ public boolean makePortal(Entity par1Entity)
                                          flag = l2 < 0;
                                         
                                          /** change this block **/
-                                         this.worldServerInstance.setBlock(k3, j3, i4, flag ? PorkerCraft.PorkObsidian.blockID : 0);
+                                         this.worldServerInstance.setBlock(k3, j3, i4, flag ? PorkerCraft.PorkBlock.blockID : 0);
                                  }
                          }
                  }
@@ -430,7 +430,7 @@ public boolean makePortal(Entity par1Entity)
                                  flag = i3 == 0 || i3 == 3 || l2 == -1 || l2 == 3;
                                 
                                  /** change these blocks **/
-                                 this.worldServerInstance.setBlock(k3, j3, i4, flag ? PorkerCraft.PorkObsidian.blockID : PorkerCraft.PorkerPortal.blockID, 0, 2);
+                                 this.worldServerInstance.setBlock(k3, j3, i4, flag ? PorkerCraft.PorkBlock.blockID : PorkerCraft.PorkerPortal.blockID, 0, 2);
                          }
                  }
                  for (i3 = 0; i3 < 4; ++i3)

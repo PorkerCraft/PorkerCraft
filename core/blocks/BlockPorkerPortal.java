@@ -104,11 +104,11 @@ public static boolean tryToCreatePortal(World par1World, int par2, int par3, int
 {
 byte b0 = 0;
 byte b1 = 0;
-if (par1World.getBlockId(par2 - 1, par3, par4) == PorkerCraft.PorkObsidian.blockID || par1World.getBlockId(par2 + 1, par3, par4) == PorkerCraft.PorkObsidian.blockID)
+if (par1World.getBlockId(par2 - 1, par3, par4) == PorkerCraft.PorkBlock.blockID || par1World.getBlockId(par2 + 1, par3, par4) == PorkerCraft.PorkBlock.blockID)
 {
 b0 = 1;
 }
-if (par1World.getBlockId(par2, par3, par4 - 1) == PorkerCraft.PorkObsidian.blockID || par1World.getBlockId(par2, par3, par4 + 1) == PorkerCraft.PorkObsidian.blockID)
+if (par1World.getBlockId(par2, par3, par4 - 1) == PorkerCraft.PorkBlock.blockID || par1World.getBlockId(par2, par3, par4 + 1) == PorkerCraft.PorkBlock.blockID)
 {
 b1 = 1;
 }
@@ -135,7 +135,7 @@ for (i1 = -1; i1 <= 3; ++i1)
          int j1 = par1World.getBlockId(par2 + b0 * l, par3 + i1, par4 + b1 * l);
          if (flag)
          {
-         if (j1 != PorkerCraft.PorkObsidian.blockID)
+         if (j1 != PorkerCraft.PorkBlock.blockID)
          {
          return false;
          }
@@ -175,7 +175,7 @@ for (i1 = par3; par1World.getBlockId(par2, i1 - 1, par4) == this.blockID; --i1)
 {
 ;
 }
-if (par1World.getBlockId(par2, i1 - 1, par4) != PorkerCraft.PorkObsidian.blockID)
+if (par1World.getBlockId(par2, i1 - 1, par4) != PorkerCraft.PorkBlock.blockID)
 {
 par1World.setBlockToAir(par2, par3, par4);
 }
@@ -186,7 +186,7 @@ for (j1 = 1; j1 < 4 && par1World.getBlockId(par2, i1 + j1, par4) == this.blockID
 {
 ;
 }
-if (j1 == 3 && par1World.getBlockId(par2, i1 + j1, par4) == PorkerCraft.PorkObsidian.blockID)
+if (j1 == 3 && par1World.getBlockId(par2, i1 + j1, par4) == PorkerCraft.PorkBlock.blockID)
 {
 boolean flag = par1World.getBlockId(par2 - 1, par3, par4) == this.blockID || par1World.getBlockId(par2 + 1, par3, par4) == this.blockID;
 boolean flag1 = par1World.getBlockId(par2, par3, par4 - 1) == this.blockID || par1World.getBlockId(par2, par3, par4 + 1) == this.blockID;
@@ -196,7 +196,7 @@ if (flag && flag1)
 }
 else
 {
-         if ((par1World.getBlockId(par2 + b0, par3, par4 + b1) != PorkerCraft.PorkObsidian.blockID || par1World.getBlockId(par2 - b0, par3, par4 - b1) != this.blockID) && (par1World.getBlockId(par2 - b0, par3, par4 - b1) != PorkerCraft.PorkObsidian.blockID || par1World.getBlockId(par2 + b0, par3, par4 + b1) != this.blockID))
+         if ((par1World.getBlockId(par2 + b0, par3, par4 + b1) != PorkerCraft.PorkBlock.blockID || par1World.getBlockId(par2 - b0, par3, par4 - b1) != this.blockID) && (par1World.getBlockId(par2 - b0, par3, par4 - b1) != PorkerCraft.PorkBlock.blockID || par1World.getBlockId(par2 + b0, par3, par4 + b1) != this.blockID))
          {
          par1World.setBlockToAir(par2, par3, par4);
          }
